@@ -1,0 +1,13 @@
+# ninja log v5
+8	168	7057087502879701	CMakeFiles/TP2.dir/BatallaDigital.cpp.obj	c66a0a8ddc4d42e3
+1	137	7057094207890613	build.ninja	f7e66d95042ebb34
+3	165	7057087502844554	CMakeFiles/TP2.dir/main.cpp.obj	5cef9b6317e0ee2
+168	251	7057087503674949	TP2.exe	855ff9ed5fce6d7e
+28	242	7057087055391437	CMakeFiles/TP2.dir/Tablero.cpp.obj	f5b587a9d2a075b2
+8	59	7057077061120343	CMakeFiles/TP2.dir/Casillero.cpp.obj	79642416c81707ae
+2	58	7057077061120343	CMakeFiles/TP2.dir/Jugador.cpp.obj	c2bd3378298cd107
+12	68	7057142165783430	CMakeFiles/TP2.dir/Soldado.cpp.obj	404780cd47f8cf18
+16	69	7057142165788557	CMakeFiles/TP2.dir/Jugador.cpp.obj	c2bd3378298cd107
+9	192	7057142167026337	CMakeFiles/TP2.dir/main.cpp.obj	5cef9b6317e0ee2
+3	196	7057142167071798	CMakeFiles/TP2.dir/BatallaDigital.cpp.obj	c66a0a8ddc4d42e3
+196	286	7057142167928783	TP2.exe	ce8dac2cf48c8847
