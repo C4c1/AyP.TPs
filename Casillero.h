@@ -1,20 +1,34 @@
-//
-// Created by Usuario on 13/05/2023.
-//
+/*
+ * Casilla.h
+ *
+ *  Created on: 20 may 2023
+ *      Author: David
+ */
 
-#ifndef TP2_CASILLERO_H
-#define TP2_CASILLERO_H
+#ifndef CASILLERO_H_
+#define CASILLERO_H_
+#include"Coordenada.h"
 
 
-class Casillero {
+class Casillero{
+
+private:
+
+	Coordenada* coordenada;
+	char simbolo;
+
 public:
-    int fila;
-    int columna;
-    int letra;
 
-    Casillero();
+	Casillero(int posicionX,int posicionY,int posicionZ);
+
+	Coordenada* getCoordenada();
+
+	char getSimbolo();
+
+	void setSimbolo(char nuevoSimbolo);
+
 };
 
 
 
-#endif //TP2_CASILLERO_H
+#endif /* CASILLERO_H_ */
