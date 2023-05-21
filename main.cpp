@@ -1,16 +1,16 @@
-#include <iostream>
-#include "BatallaDigital.h"
+/*
+ * main.cpp
+ *
+ *  Created on: 21 may 2023
+ *      Author: David
+ */
+#include"BatallaDigital.h"
+int main(){
 
+	BatallaDigital* batallaDigital = new BatallaDigital(2,2,2);
+	batallaDigital->mostrarTablero();
 
-int main() {
-
-    int jugadores,soldados,minas;
-    cout <<"Ingrese un numero de jugadores, uno de soldados y otro de minas"<<endl;
-    cin>> jugadores;
-    cin>> soldados;
-    cin>> minas;
-    BatallaDigital Batalla = BatallaDigital(jugadores,soldados,minas);
-
-    Batalla.DarInformacion();
-    return 0;
+	return 0;
 }
+
+

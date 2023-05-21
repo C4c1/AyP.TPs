@@ -1,14 +1,34 @@
-//
-// Created by Usuario on 13/05/2023.
-//
+/*
+ * Tablero.h
+ *
+ *  Created on: 20 may 2023
+ *      Author: David
+ */
 
-#ifndef TP2_TABLERO_H
-#define TP2_TABLERO_H
+#ifndef TABLERO_H_
+#define TABLERO_H_
 
+#include"Lista.h"
+#include"Casilla.h"
 
-class Tablero {
+class Tablero{
+
+private:
+
+	Lista<Lista<Lista<Casilla*>*>*>* tablero;
+	int limiteX;
+	int limiteY;
+	int limiteZ;
+
+public:
+
+	Tablero(int limiteX,int limiteY,int limiteZ);
+
+	Lista<Lista<Lista<Casilla*>*>*>* getTablero();
+
+	void crearTablero();
 
 };
 
 
-#endif //TP2_TABLERO_H
+#endif /* TABLERO_H_ */

@@ -1,35 +1,46 @@
-#include "BatallaDigital.h"
-
-void BatallaDigital::inicializarJugadores(int soldados, int minas){
-    for(int i = 0; i < this->numJugadores; i++){
-        this->jugadores[i].cantSoldados = soldados;
-        this->jugadores[i].cantMinas = minas;
-    }
-}
-
 /*
-BatallaDigital::BatallaDigital() {
-    this->jugadores = new Jugador[2];
-    this->numJugadores = 2;
-    inicializarJugadores(4, 10);
-    inicializarJugadores(4,10);
-}
-*/
+ * BatallaDigital.cpp
+ *
+ *  Created on: 21 may 2023
+ *      Author: David
+ */
+#include"BatallaDigital.h"
+using namespace std;
 
-BatallaDigital::BatallaDigital(int jugadores, int soldados, int minas) {
-    this->jugadores = new Jugador[jugadores];
-    this->numJugadores = jugadores;
-    inicializarJugadores(soldados, minas);
-}
+BatallaDigital::BatallaDigital(int limiteX,int limiteY,int limiteZ){
 
-void BatallaDigital::DarInformacion() {
-
-    cout << "Numero de jugadores: "<< numJugadores <<endl;
-    cout << "Numero de soldados: "<< this->jugadores[0].cantSoldados<<endl;
-    cout << "Numero de minas: "<< this->jugadores[0].cantMinas<<endl;
+	this->tablero = new Tablero(limiteX,limiteY,limiteZ);
 
 }
 
-BatallaDigital::~BatallaDigital() {
-    delete [] jugadores;
+void BatallaDigital::mostrarTablero(){
+
+	this->tablero->getTablero()->reiniciarCursor();
+	int numeroCapa  = 1;
+	while(this->tablero->getTablero()->avanzarCursor()){
+
+		cout<<"Capa"<<numeroCapa<<endl;
+		cout<<endl;
+		this->tablero->getTablero()->getCursor()->reiniciarCursor();
+
+		while(this->tablero->getTablero()->getCursor()->avanzarCursor()){
+
+			this->tablero->getTablero()->getCursor()->getCursor()->reiniciarCursor();
+
+			while(this->tablero->getTablero()->getCursor()->getCursor()->avanzarCursor()){
+
+				char simbolo = this->tablero->getTablero()->getCursor()->getCursor()->getCursor()->getSimbolo();
+
+				cout<<simbolo;
+
+			}
+			cout<<endl;
+		}
+		numeroCapa++;
+	}
+
 }
+
+
+
+
