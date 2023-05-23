@@ -1,35 +1,30 @@
-//
-// Created by Usuario on 13/05/2023.
-//
+/*
+ * Jugador.h
+ *
+ *  Created on: 22 may 2023
+ *      Author: David
+ */
 
-#ifndef TP2_JUGADOR_H
-#define TP2_JUGADOR_H
+#ifndef JUGADOR_H_
+#define JUGADOR_H_
 
-
-#include "Casillero.h"
-#include "Soldado.h"
-
-class Jugador {
+class Jugador{
 
 private:
 
+	Lista<Carta*>* Cartas;
+	int solodadoDisponibles;
+
+
 public:
-    int cantSoldados;
-    int cantMinas;
-    int cantCartas;
 
-    Soldado *soldados;
-    //Armamento *armamento;
-    //Carta cartas
+	Jugador();
 
-Jugador();
-Jugador(int numSoldados, int numMinas);
-
-void inicializarSoldados();
-
-~Jugador();
+	Lista<Carta*>* getCartas();
 
 };
 
 
-#endif //TP2_JUGADOR_H
+
+
+#endif /* JUGADOR_H_ */

@@ -8,14 +8,14 @@
 #ifndef TABLERO_H_
 #define TABLERO_H_
 
+#include "Casillero.h"
 #include"Lista.h"
-#include"Casilla.h"
 
 class Tablero{
 
 private:
 
-	Lista<Lista<Lista<Casilla*>*>*>* tablero;
+	Lista<Lista<Lista<Casillero*>*>*>* tablero;
 	int limiteX;
 	int limiteY;
 	int limiteZ;
@@ -24,7 +24,7 @@ public:
 
 	Tablero(int limiteX,int limiteY,int limiteZ);
 
-	Lista<Lista<Lista<Casilla*>*>*>* getTablero();
+	Lista<Lista<Lista<Casillero*>*>*>* getTablero();
 
 	void crearTablero();
 

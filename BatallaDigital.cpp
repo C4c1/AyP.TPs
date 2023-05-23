@@ -7,9 +7,15 @@
 #include"BatallaDigital.h"
 using namespace std;
 
-BatallaDigital::BatallaDigital(int limiteX,int limiteY,int limiteZ){
+BatallaDigital::BatallaDigital(int limiteX,int limiteY,int limiteZ,int cantidadJugadores,int cantidadSoldados){
 
 	this->tablero = new Tablero(limiteX,limiteY,limiteZ);
+	this->cantidadJugadores = cantidadJugadores;
+	this->cantidadSoldados = cantidadSoldados;
+	this->jugadores = new Lista<Jugador*>();
+
+	//this->mazoDeCartas = new Pila<Carta*>();
+	//this->crearMazoDeCartas();
 
 }
 
@@ -37,10 +43,32 @@ void BatallaDigital::mostrarTablero(){
 			cout<<endl;
 		}
 		numeroCapa++;
+		cout<<endl;
 	}
 
 }
+/*
+void BatallaDigital::crearMazoDeCartas(){
+	int contadorCartas = 0;
+	do{
 
+		Carta* cartaAtaqueQuimico = new Carta(CartaAtaqueQuimico);
+		contadorCartas++;
+		this->mazoDeCartas->apilar(cartaAtaqueQuimico);
+		Carta* cartaBarco = new Carta(cartaDeBarco);
+		contadorCartas++;
+		this->mazoDeCartas->apilar(cartaBarco);
+		Carta* cartaAvion = new Carta(cartaDeAvionRadar);
+		contadorCartas++;
+		this->mazoDeCartas->apilar(cartaAvion);
 
+	}while(contadorCartas < 20);
+
+}
+
+Pila<Carta*>* BatallaDigital::getMazoDeCartas(){
+	return this->mazoDeCartas;
+}
+*/
 
 

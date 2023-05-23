@@ -11,28 +11,28 @@ Tablero::Tablero(int limiteX,int limiteY,int limiteZ){
 	this->limiteX = limiteX;
 	this->limiteY = limiteY;
 	this->limiteZ = limiteZ;
-	this->tablero = new Lista<Lista<Lista<Casilla*>*>*>();
+	this->tablero = new Lista<Lista<Lista<Casillero*>*>*>();
 	this->crearTablero();
 
 
 }
 
-Lista<Lista<Lista<Casilla*>*>*>* Tablero::getTablero(){
+Lista<Lista<Lista<Casillero*>*>*>* Tablero::getTablero(){
 	return this->tablero;
 }
 
 void Tablero::crearTablero(){
-	for(int i = 0;i<=this->limiteX;i++){
+	for(int i = 0;i<this->limiteZ;i++){
 
-		Lista<Lista<Casilla*>*>* nivelUno = new Lista<Lista<Casilla*>*>();
+		Lista<Lista<Casillero*>*>* nivelUno = new Lista<Lista<Casillero*>*>();
 
-		for(int j = 0;j<=this->limiteY;j++){
+		for(int j = 0;j<this->limiteY;j++){
 
-			Lista<Casilla*>* nivelDos = new Lista<Casilla*>();
+			Lista<Casillero*>* nivelDos = new Lista<Casillero*>();
 
-			for(int k = 0;k<=this->limiteZ;k++){
+			for(int k = 0;k<this->limiteX;k++){
 
-				Casilla* nuevaCasilla = new Casilla(i,j,k);
+				Casillero* nuevaCasilla = new Casillero(i,j,k);
 				nivelDos->add(nuevaCasilla);
 
 			}

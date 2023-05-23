@@ -7,7 +7,10 @@
 
 #ifndef BATALLADIGITAL_H_
 #define BATALLADIGITAL_H_
-#include "Tablero.h"
+#include"Tablero.h"
+#include"Carta.h"
+#include"Pila.h"
+#include"Jugador.h"
 #include<iostream>
 
 class BatallaDigital{
@@ -15,12 +18,24 @@ class BatallaDigital{
 private:
 
 	Tablero* tablero;
+	int cantidadJugadores;
+	int cantidadSoldados;
+	Lista<Jugador*>* jugadores;
+	//Pila<Carta*>* mazoDeCartas;
 
 public:
 
-	BatallaDigital(int limiteX,int limiteY,int limiteZ);
+	BatallaDigital(int limiteX,int limiteY,int limiteZ,int cantidadJugadores,int cantidadSoldados);
+
+	int getCantidadJugadores();
+
+	int getCantidadSoldados();
 
 	void mostrarTablero();
+
+	//void crearMazoDeCartas();
+
+	//Pila<Carta*>* getMazoDeCartas();
 
 };
 

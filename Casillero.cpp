@@ -10,8 +10,9 @@
 Casillero::Casillero(int posicionX,int posicionY,int posicionZ){
 
 	this->coordenada = new Coordenada(posicionX, posicionY, posicionZ);
-
+	this->terreno = tierra;
 	this->simbolo = '*';
+	this->ficha = NULL;
 
 }
 
@@ -33,3 +34,6 @@ void Casillero::setSimbolo(char nuevoSimbolo){
 
 }
 
+void Casillero::setTerrono(TipoTerreno nuevoTerreno){
+	this->terreno = nuevoTerreno;
+}
