@@ -12,6 +12,7 @@ using namespace std;
 int main(){
 
 	BatallaDigital* batallaDigital = new BatallaDigital(6,4,7,2,2);
+	batallaDigital->cargarTablero();
 	batallaDigital->mostrarTablero();
 
 	return 0;

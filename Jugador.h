@@ -18,7 +18,7 @@ private:
 
 public:
 
-	Jugador();
+	Jugador(int solodadoDisponibles);
 
 	Lista<Carta*>* getCartas();
 

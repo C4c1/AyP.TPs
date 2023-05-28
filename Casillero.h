@@ -10,7 +10,9 @@
 #include"Coordenada.h"
 #include"Ficha.h"
 #define NULL 0
-typedef enum TipoTerreno {tierra, agua, aire};
+
+typedef enum TipoTerreno {tierra,agua,aire};
+typedef enum Estado {libre,bloqueado};
 
 class Casillero{
 
@@ -20,6 +22,7 @@ private:
 	char simbolo;
 	TipoTerreno terreno;
 	Ficha* ficha;
+	Estado estado;
 
 public:
 

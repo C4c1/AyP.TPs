@@ -37,7 +37,7 @@ void BatallaDigital::mostrarTablero(){
 
 				char simbolo = this->tablero->getTablero()->getCursor()->getCursor()->getCursor()->getSimbolo();
 
-				cout<<simbolo;
+				cout<<" "<<simbolo;
 
 			}
 			cout<<endl;
@@ -45,6 +45,46 @@ void BatallaDigital::mostrarTablero(){
 		numeroCapa++;
 		cout<<endl;
 	}
+
+}
+
+Tablero* BatallaDigital::getTablero(){
+	return this->tablero;
+}
+
+void BatallaDigital::cargarMapa(){
+	Lista<Lista<Lista<Casillero*>*>*>* tablero = this->tablero->getTablero();
+
+	tablero->reiniciarCursor();
+	while(tablero->avanzarCursor()){
+
+		Lista<Lista<Casillero*>*>* nivelUno = tablero->getCursor();
+		nivelUno->reiniciarCursor();
+		while(nivelUno->avanzarCursor()){
+
+			Lista<Casillero*>* nivelDos = nivelUno->getCursor();
+			nivelDos->reiniciarCursor();
+			while(nivelDos->avanzarCursor()){
+
+				Casillero* casilla = nivelDos->getCursor();
+				if(casilla->getCoordenada()->getPosicionZ() < 5){
+					if(casilla->getCoordenada()->getPosicionY() < (this->tablero->getLimiteY()/2)){
+						casilla->setSimbolo('A');
+						casilla->setTerrono(agua);
+					}else{
+						casilla->setSimbolo('T');
+						casilla->setTerrono(tierra);
+					}
+				}
+			}
+		}
+
+	}
+}
+
+void BatallaDigital::agregarJugador(){
+
+
 
 }
 /*

@@ -13,6 +13,7 @@ Casillero::Casillero(int posicionX,int posicionY,int posicionZ){
 	this->terreno = tierra;
 	this->simbolo = '*';
 	this->ficha = NULL;
+	this->estado = libre;
 
 }
 

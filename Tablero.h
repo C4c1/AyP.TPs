@@ -28,6 +28,12 @@ public:
 
 	void crearTablero();
 
+	int getLimiteX();
+
+	int getLimiteY();
+
+	int getLimiteZ();
+
 };
 
 

@@ -33,6 +33,12 @@ public:
 
 	void mostrarTablero();
 
+	void agregarJugador();
+
+	Tablero* getTablero();
+
+	void cargarMapa();
+
 	//void crearMazoDeCartas();
 
 	//Pila<Carta*>* getMazoDeCartas();
