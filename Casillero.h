@@ -12,7 +12,7 @@
 #define NULL 0
 
 typedef enum TipoTerreno {tierra,agua,aire};
-typedef enum Estado {libre,bloqueado};
+typedef enum Estado {libre,ocupado,bloqueado};
 
 class Casillero{
 
@@ -35,6 +35,16 @@ public:
 	void setSimbolo(char nuevoSimbolo);
 
 	void setTerrono(TipoTerreno nuevoTerreno);
+
+	Estado getEstado();
+
+	void setEstado(Estado estado);
+
+	TipoTerreno getTipoTerreno();
+
+	void setFicha(Ficha* ficha);
+
+	Ficha* getFicha();
 
 };
 

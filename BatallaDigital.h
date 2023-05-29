@@ -33,11 +33,13 @@ public:
 
 	void mostrarTablero();
 
-	void agregarJugador();
+	void agregarJugador(char simbolo);
 
 	Tablero* getTablero();
 
 	void cargarMapa();
+
+	bool colocarFicha(Ficha* ficha,int posicionX, int posicionY, int posicionZ);
 
 	//void crearMazoDeCartas();
 

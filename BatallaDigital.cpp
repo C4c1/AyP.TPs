@@ -34,10 +34,18 @@ void BatallaDigital::mostrarTablero(){
 			this->tablero->getTablero()->getCursor()->getCursor()->reiniciarCursor();
 
 			while(this->tablero->getTablero()->getCursor()->getCursor()->avanzarCursor()){
+				Casillero* casillero = this->tablero->getTablero()->getCursor()->getCursor()->getCursor();
+				if(casillero->getFicha() != NULL){
 
-				char simbolo = this->tablero->getTablero()->getCursor()->getCursor()->getCursor()->getSimbolo();
+					char simbolo = casillero->getFicha()->getSimbolo();
+					cout<<" "<<simbolo;
 
-				cout<<" "<<simbolo;
+				}else{
+
+					char simbolo = this->tablero->getTablero()->getCursor()->getCursor()->getCursor()->getSimbolo();
+					cout<<" "<<simbolo;
+
+				}
 
 			}
 			cout<<endl;
@@ -82,11 +90,29 @@ void BatallaDigital::cargarMapa(){
 	}
 }
 
-void BatallaDigital::agregarJugador(){
+void BatallaDigital::agregarJugador(char simbolo){
 
+	Jugador* nuevoJugador = new Jugador(this->cantidadSoldados,simbolo);
 
+	this->jugadores->add(nuevoJugador);
 
 }
+
+bool BatallaDigital::colocarFicha(Ficha* ficha,int posicionX, int posicionY, int posicionZ){
+
+	Casillero* casillero = this->tablero->getTablero()->get(posicionZ)->get(posicionY)->get(posicionX);
+
+	if(casillero->getEstado() == libre){
+		casillero->setFicha(ficha);
+		casillero->setEstado(ocupado);
+		return true;
+	}else{
+		return false;
+	}
+
+}
+
+
 /*
 void BatallaDigital::crearMazoDeCartas(){
 	int contadorCartas = 0;

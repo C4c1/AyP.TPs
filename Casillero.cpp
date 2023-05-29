@@ -38,3 +38,23 @@ void Casillero::setSimbolo(char nuevoSimbolo){
 void Casillero::setTerrono(TipoTerreno nuevoTerreno){
 	this->terreno = nuevoTerreno;
 }
+
+Estado Casillero::getEstado(){
+	return this->estado;
+}
+
+void Casillero::setEstado(Estado estado){
+	this->estado = estado;
+}
+
+TipoTerreno Casillero::getTipoTerreno(){
+	return this->terreno;
+}
+
+void Casillero::setFicha(Ficha* ficha){
+	this->ficha = ficha;
+}
+
+Ficha* Casillero::getFicha(){
+	return this->ficha;
+}

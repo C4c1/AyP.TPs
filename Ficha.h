@@ -15,6 +15,7 @@ class Ficha{
 private:
 
 	TipoFicha tipoFicha;
+	char simbolo;
 
 public:
 
@@ -22,7 +23,7 @@ public:
 
 	TipoFicha getTipoFicha();
 
-	void setTipoFicha();
+	char getSimbolo();
 
 };
 
