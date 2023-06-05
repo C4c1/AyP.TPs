@@ -6,12 +6,13 @@
  */
 
 #include "Casillero.h"
+using namespace std;
 
 Casillero::Casillero(int posicionX,int posicionY,int posicionZ){
 
 	this->coordenada = new Coordenada(posicionX, posicionY, posicionZ);
 	this->terreno = tierra;
-	this->simbolo = '*';
+	this->simbolo = "*";
 	this->ficha = NULL;
 	this->estado = libre;
 
@@ -23,13 +24,13 @@ Coordenada* Casillero::getCoordenada(){
 
 }
 
-char Casillero::getSimbolo(){
+string Casillero::getSimbolo(){
 
 	return this->simbolo;
 
 }
 
-void Casillero::setSimbolo(char nuevoSimbolo){
+void Casillero::setSimbolo(string nuevoSimbolo){
 
 	this->simbolo = nuevoSimbolo;
 
@@ -58,3 +59,4 @@ void Casillero::setFicha(Ficha* ficha){
 Ficha* Casillero::getFicha(){
 	return this->ficha;
 }
+

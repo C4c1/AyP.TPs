@@ -30,7 +30,7 @@ void Tablero::crearTablero(){
 
 			for(int posicionX = 0;posicionX<this->limiteX;posicionX++){
 
-				Casillero* nuevaCasilla = new Casillero(posicionX,posicionY,posicionZ);
+				Casillero* nuevaCasilla = new Casillero(posicionX+1,posicionY+1,posicionZ+1);
 				nivelDos->add(nuevaCasilla);
 
 			}

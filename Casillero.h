@@ -7,6 +7,7 @@
 
 #ifndef CASILLERO_H_
 #define CASILLERO_H_
+#include<string>
 #include"Coordenada.h"
 #include"Ficha.h"
 #define NULL 0
@@ -19,7 +20,7 @@ class Casillero{
 private:
 
 	Coordenada* coordenada;
-	char simbolo;
+	std::string simbolo;
 	TipoTerreno terreno;
 	Ficha* ficha;
 	Estado estado;
@@ -30,9 +31,9 @@ public:
 
 	Coordenada* getCoordenada();
 
-	char getSimbolo();
+	std::string getSimbolo();
 
-	void setSimbolo(char nuevoSimbolo);
+	void setSimbolo(std::string nuevoSimbolo);
 
 	void setTerrono(TipoTerreno nuevoTerreno);
 

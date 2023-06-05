@@ -24,13 +24,19 @@ public:
 
 	void ingresarJugadores();
 
-	BatallaDigital* getJuego(){
-		return this->juego;
-	}
-
-	bool validarCaracterJugador(char caracter);
-
 	void aniadirSoldadosEnTablero(Tablero* tablero, Lista<Jugador*>* jugadores);
+
+	int validarPosicion(int valorMinimo, int valorMaximo,std::string texto);
+
+	Coordenada* validarCasilla(std::string simboloAComparar,std::string simbolo);
+
+	Ficha* seleccionarFicha(Jugador* jugador);
+
+	void iniciarPartida();
+
+	void moverFicha(Ficha* ficha);
+
+	Casillero* moverSoldado(Ficha* ficha);
 
 };
 

@@ -7,6 +7,7 @@
 
 #ifndef FICHA_H_
 #define FICHA_H_
+#include<string>
 #include"Coordenada.h"
 enum TipoFicha{soldado,mina,barco,avionRadar};
 #define NULL 0;
@@ -16,7 +17,7 @@ class Ficha{
 private:
 
 	TipoFicha tipoFicha;
-	char simbolo;
+	std::string simbolo;
 	Coordenada* coordenadas;
 
 public:
@@ -25,7 +26,11 @@ public:
 
 	TipoFicha getTipoFicha();
 
-	char getSimbolo();
+	std::string getSimbolo();
+
+	Coordenada* getCoordenada();
+
+	void setCoordenada(Coordenada* nuevaCoordenada);
 
 };
 

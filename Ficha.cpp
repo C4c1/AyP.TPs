@@ -4,19 +4,20 @@
  *  Created on: 23 may 2023
  *      Author: David
  */
+using namespace std;
 #include"Ficha.h"
 
 Ficha::Ficha(TipoFicha tipoFicha){
 	this->tipoFicha = tipoFicha;
 	this->coordenadas = NULL;
 	if(this->tipoFicha == soldado){
-		this->simbolo = 'S';
+		this->simbolo = "S";
 	}else if(this->tipoFicha == barco){
-		this->simbolo = 'B';
+		this->simbolo = "B";
 	}else if(this->tipoFicha == mina){
-		this->simbolo = 'M';
+		this->simbolo = "M";
 	}else if(this->tipoFicha == avionRadar){
-		this->simbolo = '+';
+		this->simbolo = "+";
 	}
 }
 
@@ -24,8 +25,16 @@ TipoFicha Ficha::getTipoFicha(){
 	return this->tipoFicha;
 }
 
-char Ficha::getSimbolo(){
+string Ficha::getSimbolo(){
 	return this->simbolo;
+}
+
+Coordenada* Ficha::getCoordenada(){
+	return this->coordenadas;
+}
+
+void Ficha::setCoordenada(Coordenada* nuevaCoordenada){
+	this->coordenadas = nuevaCoordenada;
 }
 
 

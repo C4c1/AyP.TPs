@@ -4,10 +4,10 @@
  *  Created on: 22 may 2023
  *      Author: David
  */
-
+using namespace std;
 #include"Jugador.h"
 
-Jugador::Jugador(int solodadoDisponibles, char simbolo){
+Jugador::Jugador(int solodadoDisponibles, string simbolo){
 	this->cartas = new Lista<Carta*>();
 	this->simbolo = simbolo;
 	this->numeroSoldadosDisponibles = solodadoDisponibles;
@@ -18,7 +18,7 @@ Lista<Carta*>* Jugador::getCartas(){
 	return this->cartas;
 }
 
-char Jugador::getSimbolo(){
+string Jugador::getSimbolo(){
 	return this->simbolo;
 }
 

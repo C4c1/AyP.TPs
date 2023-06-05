@@ -49,12 +49,12 @@ void BatallaDigital::mostrarTablero(){
 				Casillero* casillero = this->tablero->getTablero()->getCursor()->getCursor()->getCursor();
 				if(casillero->getFicha() != NULL){
 
-					char simbolo = casillero->getFicha()->getSimbolo();
+					string simbolo = casillero->getFicha()->getSimbolo();
 					cout<<" "<<simbolo;
 
 				}else{
 
-					char simbolo = this->tablero->getTablero()->getCursor()->getCursor()->getCursor()->getSimbolo();
+					string simbolo = this->tablero->getTablero()->getCursor()->getCursor()->getCursor()->getSimbolo();
 					cout<<" "<<simbolo;
 
 				}
@@ -87,12 +87,12 @@ void BatallaDigital::cargarMapa(){
 			while(nivelDos->avanzarCursor()){
 
 				Casillero* casilla = nivelDos->getCursor();
-				if(casilla->getCoordenada()->getPosicionZ() < 5){
-					if(casilla->getCoordenada()->getPosicionY() < (this->tablero->getLimiteY()/2)){
-						casilla->setSimbolo('A');
+				if(casilla->getCoordenada()->getPosicionZ() <= 5){
+					if(casilla->getCoordenada()->getPosicionY() <= (this->tablero->getLimiteY()/2)){
+						casilla->setSimbolo("A");
 						casilla->setTerrono(agua);
 					}else{
-						casilla->setSimbolo('T');
+						casilla->setSimbolo("T");
 						casilla->setTerrono(tierra);
 					}
 				}
@@ -105,8 +105,14 @@ void BatallaDigital::cargarMapa(){
 void BatallaDigital::agregarJugadores(int cantidad){
 
 	for(int i = 0 ; i < cantidad ; i++){
+		int numeroJugador = i + 1;
+		string simbolo;
+		stringstream ss;
+		ss << numeroJugador;
+		ss >> simbolo;
 
-		Jugador* nuevoJugador = new Jugador(this->cantidadSoldados, (char)(i + 1));
+		//cout<<"SIMBOLO JUGADOR: "<<simbolo<<endl;
+		Jugador* nuevoJugador = new Jugador(this->cantidadSoldados, simbolo);
 		this->jugadores->add(nuevoJugador);
 
 	}
@@ -114,12 +120,15 @@ void BatallaDigital::agregarJugadores(int cantidad){
 
 }
 
-bool BatallaDigital::colocarFicha(Ficha* ficha,int posicionX, int posicionY, int posicionZ){
+bool BatallaDigital::colocarFicha(Ficha* ficha, Coordenada* coordenada){
 
-	Casillero* casillero = this->tablero->getTablero()->get(posicionZ)->get(posicionY)->get(posicionX);
+	Casillero* casillero = this->tablero->getTablero()->get(coordenada->getPosicionZ())->get(coordenada->getPosicionY())->get(coordenada->getPosicionX());
+	//cout<<coordenada->getPosicionX()<<coordenada->getPosicionY()<<coordenada->getPosicionZ()<<endl;
 
 	if(casillero->getEstado() == libre){
 		casillero->setFicha(ficha);
+		ficha->setCoordenada(coordenada);
+
 		casillero->setEstado(ocupado);
 		return true;
 	}else{
@@ -150,6 +159,50 @@ int BatallaDigital::getCantidadSoldados(){
 
 Lista<Jugador*>* BatallaDigital::getJugadores(){
 	return this->jugadores;
+}
+
+Casillero* BatallaDigital::buscarCasillero(Coordenada* coordenada){
+	return this->tablero->getTablero()->get(coordenada->getPosicionZ())->get(coordenada->getPosicionY())->get(coordenada->getPosicionX());
+}
+
+Casillero* BatallaDigital::buscarCasillero(int posicionX,int posicionY,int posicionZ){
+	return this->tablero->getTablero()->get(posicionZ)->get(posicionY)->get(posicionX);
+}
+
+
+/*
+void BatallaDigital::moverFicha(Ficha* ficha){
+
+}
+*/
+/*
+Casillero* BatallaDigital::moverSoldado(Ficha* ficha){
+
+	if((ficha->getCoordenada()->getPosicionX() - 1) >= 1){
+
+		Casillero* casillero = this->buscarCasillero(ficha->getCoordenada()->getPosicionX() - 1,ficha->getCoordenada()->getPosicionY(),ficha->getCoordenada()->getPosicionZ());
+		if(casillero->getTipoTerreno() != agua && casillero->getFicha()){
+
+			cout<< "1 - Mover a: "<<"("<<ficha->getCoordenada()->getPosicionX() - 1<<","<<ficha->getCoordenada()->getPosicionY()<<","<<ficha->getCoordenada()->getPosicionZ()<<")"<<endl;
+		}
+
+	}
+
+	if((ficha->getCoordenada()->getPosicionX() + 1) <= this->getTablero()->getLimiteX()){
+
+		Casillero* casillero = this->buscarCasillero(ficha->getCoordenada()->getPosicionX() + 1,ficha->getCoordenada()->getPosicionY(),ficha->getCoordenada()->getPosicionZ());
+
+		cout<< "1 - Mover a: "<<"("<<ficha->getCoordenada()->getPosicionX() + 1<<","<<ficha->getCoordenada()->getPosicionY()<<","<<ficha->getCoordenada()->getPosicionZ()<<")"<<endl;
+
+	}
+
+	if((ficha->getCoordenada()->getPosicionY() - 1) >= 1){
+
+	}
+
+	if((ficha->getCoordenada()->getPosicionX() - 1) >= 1){
+
+	}
 }
 
 /*

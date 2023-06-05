@@ -16,16 +16,16 @@ private:
 
 	Lista<Carta*>* cartas;
 	int numeroSoldadosDisponibles;
-	char simbolo;
+	std::string simbolo;
 	Lista<Ficha*>* FichasDisponibles;
 
 public:
 
-	Jugador(int solodadoDisponibles, char simbolo);
+	Jugador(int solodadoDisponibles, std::string simbolo);
 
 	Lista<Carta*>* getCartas();
 
-	char getSimbolo();
+	std::string getSimbolo();
 
 	int getSoldadosDisponibles();
 

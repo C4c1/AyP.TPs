@@ -21,14 +21,18 @@ void Menu::iniciarJuego(){
 	this->juego->getTablero()->setLimiteZ(6);
 	this->juego->getTablero()->crearTablero();
 	this->juego->cargarMapa();
+	this->juego->mostrarTablero();
+	//this->juego->mostrarTableroConCoordenadas();
 	this->ingresarJugadores();
-	cout<<"cantidad"<<this->juego->getCantidadSoldados()<<endl;
+	cout<<"cantidad: "<<this->juego->getCantidadSoldados()<<endl;
 	this->juego->aniadirSoldadosAJugador(this->juego->getCantidadSoldados());
 
 	this->aniadirSoldadosEnTablero(juego->getTablero(),juego->getJugadores());
 
 	this->juego->mostrarTablero();
+	this->juego->mostrarTablerocasilleroBloqueados();
 
+	cout<<this->seleccionarFicha(juego->getJugadores()->get(1))->getSimbolo()<<endl;
 
 }
 
@@ -56,16 +60,6 @@ void Menu::ingresarJugadores(){
 
 }
 
-bool Menu::validarCaracterJugador(char caracter){
-
-	if(caracter != 'A' && caracter != 'T' && caracter != '*' && ((int)caracter > 32) && ((int)caracter < 127)){
-		return true;
-	}else{
-		cout<<"Caracter no valido"<<endl;
-		return false;
-	}
-
-}
 
 void Menu::aniadirSoldadosEnTablero(Tablero* tablero, Lista<Jugador*>* jugadores){
 
@@ -74,37 +68,157 @@ void Menu::aniadirSoldadosEnTablero(Tablero* tablero, Lista<Jugador*>* jugadores
 	while(jugadores->avanzarCursor()){
 
 		int contadorSoldado = 1;
-		cout<<"	Jugador "<<jugadores->getCursor()->getSimbolo()<<"Soldado N°: "<<contadorSoldado<<endl;
+
 		Lista<Ficha*> * fichas = jugadores->getCursor()->getFichasDisponibles();
 		fichas->reiniciarCursor();
 		while(fichas->avanzarCursor()){
 			Ficha* soldado = fichas->getCursor();
-			int posicionX;
-			int posicionY;
-			int posicionZ;
-			cout<<"Ingrese posicion X: "<<endl;
-			cin>>posicionX;
-			cout<<"Ingrese posicion Y: "<<endl;
-			cin>>posicionY;
-			cout<<"Ingrese posicion Z: "<<endl;
-			cin>>posicionZ;
-			this->juego->colocarFicha(soldado, posicionX, posicionY, posicionZ);
+
+			cout<<"	Jugador "<<jugadores->getCursor()->getSimbolo()<<" || "<<"Soldado NÂ°: "<<contadorSoldado<<endl;
+
+			this->juego->colocarFicha(soldado,this->validarCasilla("S","A"));
+			this->juego->mostrarTablero();
+			contadorSoldado++;
 		}
 
 	}
 
 }
 
+int Menu::validarPosicion(int valorMinimo, int valorMaximo, string texto){
+	bool valido = false;
+	int numero;
+	while(valido == false){
+		cout<<texto;
+		cin>>numero;
+		if(numero > valorMinimo && numero <= valorMaximo){
+			valido = true;
+		}else{
+			cout<<"Valor no valido, ingres uno nuevo"<<endl;
+		}
+	}
+	return numero;
+}
+
+Coordenada* Menu::validarCasilla(string simboloAComparar,string simbolo){
+	int posicionX;
+	int posicionY;
+	int posicionZ;
+	bool valido = false;
+	Coordenada* coordenadaValida;
+	do{
+		posicionX = this->validarPosicion(0,this->juego->getTablero()->getLimiteX(),"Ingrese posicion X: ");
+		posicionY = this->validarPosicion(0,this->juego->getTablero()->getLimiteY(),"Ingrese posicion Y: ");
+
+		if(simboloAComparar == "S" || simboloAComparar == "B"){
+			posicionZ = 5;//los soldados van si o si sobre tierra
+		}else{
+			posicionZ = this->validarPosicion(5,this->juego->getTablero()->getLimiteZ(),"Ingrese posicion Z: ");
+		}
+
+		Casillero* casillero = this->juego->getTablero()->getTablero()->get(posicionZ)->get(posicionY)->get(posicionX);
+
+		if(simboloAComparar == "S" && casillero->getEstado() == libre && casillero->getTipoTerreno() == tierra ){
+			valido = true;
+			//casillero->setEstado(ocupado);
+			coordenadaValida = casillero->getCoordenada();
+			cout<<"Casillero valido"<<endl;
+		}else if(simboloAComparar == "B" && casillero->getEstado() == libre && casillero->getTipoTerreno() == agua ){
+			valido = true;
+			//casillero->setEstado(ocupado);
+			coordenadaValida = casillero->getCoordenada();
+			cout<<"Casillero valido"<<endl;
+		}else{
+			cout<<"Casillero ocupada, eliga otro"<<endl;
+		}
+
+	}while(valido == false);
+	cout<<"regreso coordenada de casillero valido "<< coordenadaValida->getPosicionX()<<coordenadaValida->getPosicionY()<<coordenadaValida->getPosicionZ()<<endl;
+	return coordenadaValida;
+}
+
+Ficha* Menu::seleccionarFicha(Jugador* jugador){
+
+	int posicionDeFicha;
+	int contador = 1;;
+
+	jugador->getFichasDisponibles()->reiniciarCursor();
+	while(jugador->getFichasDisponibles()->avanzarCursor()){
+
+
+		Ficha* ficha = jugador->getFichasDisponibles()->getCursor();
+
+
+		if(ficha->getTipoFicha() == soldado){
+
+			cout<<contador<<" - Soldado     | Posicion: "<<"("<<ficha->getCoordenada()->getPosicionX()<<","<<ficha->getCoordenada()->getPosicionY()<<","<<ficha->getCoordenada()->getPosicionZ()<<")"<<endl;
+			contador++;
+
+		}else if(ficha->getTipoFicha() == barco){
+
+			cout<<contador<<" - Barco       | Posicion: "<<"("<<ficha->getCoordenada()->getPosicionX()<<","<<ficha->getCoordenada()->getPosicionY()<<","<<ficha->getCoordenada()->getPosicionZ()<<")"<<endl;
+			contador++;
+
+		}else if(ficha->getTipoFicha() == avionRadar){
+
+			cout<<contador<<" - Avion radar | Posicion: "<<"("<<ficha->getCoordenada()->getPosicionX()<<","<<ficha->getCoordenada()->getPosicionY()<<","<<ficha->getCoordenada()->getPosicionZ()<<")"<<endl;
+			contador++;
+
+		}
+
+	}
+
+
+	posicionDeFicha = this->validarPosicion(0,jugador->getFichasDisponibles()->contarElementos(),"Ingrese el numero de ficha a mover: ");
+
+	return jugador->getFichasDisponibles()->get(posicionDeFicha);
+}
+
+void Menu::iniciarPartida(){
+
+	this->juego->getJugadores()->reiniciarCursor();
+
+	while(this->juego->getJugadores()->avanzarCursor()){
+
+		Jugador* jugador = this->juego->getJugadores()->getCursor();
 
 
 
+	}
+}
 
+void Menu::moverFicha(Ficha* ficha){
 
+}
 
+Casillero* Menu::moverSoldado(Ficha* ficha){
 
+	if((ficha->getCoordenada()->getPosicionX() - 1) >= 1){
 
+		Casillero* casillero = this->juego->buscarCasillero(ficha->getCoordenada()->getPosicionX() - 1,ficha->getCoordenada()->getPosicionY(),ficha->getCoordenada()->getPosicionZ());
+		if(casillero->getTipoTerreno() != agua && casillero->getFicha()){
 
+			cout<< "1 - Mover a: "<<"("<<ficha->getCoordenada()->getPosicionX() - 1<<","<<ficha->getCoordenada()->getPosicionY()<<","<<ficha->getCoordenada()->getPosicionZ()<<")"<<endl;
+		}
 
+	}
+
+	if((ficha->getCoordenada()->getPosicionX() + 1) <= this->juego->getTablero()->getLimiteX()){
+
+		Casillero* casillero = this->juego->buscarCasillero(ficha->getCoordenada()->getPosicionX() + 1,ficha->getCoordenada()->getPosicionY(),ficha->getCoordenada()->getPosicionZ());
+
+		cout<< "1 - Mover a: "<<"("<<ficha->getCoordenada()->getPosicionX() + 1<<","<<ficha->getCoordenada()->getPosicionY()<<","<<ficha->getCoordenada()->getPosicionZ()<<")"<<endl;
+
+	}
+
+	if((ficha->getCoordenada()->getPosicionY() - 1) >= 1){
+
+	}
+
+	if((ficha->getCoordenada()->getPosicionX() - 1) >= 1){
+
+	}
+}
 
 
 
