@@ -8,7 +8,7 @@
 
 Ficha::Ficha(TipoFicha tipoFicha){
 	this->tipoFicha = tipoFicha;
-
+	this->coordenadas = NULL;
 	if(this->tipoFicha == soldado){
 		this->simbolo = 'S';
 	}else if(this->tipoFicha == barco){

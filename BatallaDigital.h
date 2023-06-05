@@ -25,6 +25,8 @@ private:
 
 public:
 
+	BatallaDigital();
+
 	BatallaDigital(int limiteX,int limiteY,int limiteZ,int cantidadJugadores,int cantidadSoldados);
 
 	int getCantidadJugadores();
@@ -33,7 +35,7 @@ public:
 
 	void mostrarTablero();
 
-	void agregarJugador(char simbolo);
+	void agregarJugadores(int cantidad);
 
 	Tablero* getTablero();
 
@@ -41,9 +43,14 @@ public:
 
 	bool colocarFicha(Ficha* ficha,int posicionX, int posicionY, int posicionZ);
 
+	void aniadirSoldadosAJugador(int cantidad);
+
+	Lista<Jugador*>* getJugadores();
+
 	//void crearMazoDeCartas();
 
 	//Pila<Carta*>* getMazoDeCartas();
+
 
 };
 

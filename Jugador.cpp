@@ -10,7 +10,8 @@
 Jugador::Jugador(int solodadoDisponibles, char simbolo){
 	this->cartas = new Lista<Carta*>();
 	this->simbolo = simbolo;
-	this->solodadoDisponibles = solodadoDisponibles;
+	this->numeroSoldadosDisponibles = solodadoDisponibles;
+	this->FichasDisponibles = new Lista<Ficha*>();
 }
 
 Lista<Carta*>* Jugador::getCartas(){
@@ -22,5 +23,9 @@ char Jugador::getSimbolo(){
 }
 
 int Jugador::getSoldadosDisponibles(){
-	return this->solodadoDisponibles;
+	return this->numeroSoldadosDisponibles;
+}
+
+Lista<Ficha*>* Jugador::getFichasDisponibles(){
+	return this->FichasDisponibles;
 }

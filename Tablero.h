@@ -34,6 +34,11 @@ public:
 
 	int getLimiteZ();
 
+	void setLimiteX(int nuevoLimite);
+
+	void setLimiteY(int nuevoLimite);
+
+	void setLimiteZ(int nuevoLimite);
 };
 
 

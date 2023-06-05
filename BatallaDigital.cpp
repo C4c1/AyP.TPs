@@ -7,6 +7,18 @@
 #include"BatallaDigital.h"
 using namespace std;
 
+BatallaDigital::BatallaDigital(){
+
+	this->tablero = new Tablero(1,1,1);
+	this->cantidadJugadores = 0;
+	this->cantidadSoldados = 2;
+	this->jugadores = new Lista<Jugador*>();
+
+	//this->mazoDeCartas = new Pila<Carta*>();
+	//this->crearMazoDeCartas();
+
+}
+
 BatallaDigital::BatallaDigital(int limiteX,int limiteY,int limiteZ,int cantidadJugadores,int cantidadSoldados){
 
 	this->tablero = new Tablero(limiteX,limiteY,limiteZ);
@@ -90,11 +102,15 @@ void BatallaDigital::cargarMapa(){
 	}
 }
 
-void BatallaDigital::agregarJugador(char simbolo){
+void BatallaDigital::agregarJugadores(int cantidad){
 
-	Jugador* nuevoJugador = new Jugador(this->cantidadSoldados,simbolo);
+	for(int i = 0 ; i < cantidad ; i++){
 
-	this->jugadores->add(nuevoJugador);
+		Jugador* nuevoJugador = new Jugador(this->cantidadSoldados, (char)(i + 1));
+		this->jugadores->add(nuevoJugador);
+
+	}
+
 
 }
 
@@ -112,6 +128,29 @@ bool BatallaDigital::colocarFicha(Ficha* ficha,int posicionX, int posicionY, int
 
 }
 
+int BatallaDigital::getCantidadJugadores(){
+	return this->cantidadJugadores;
+}
+
+void BatallaDigital::aniadirSoldadosAJugador(int cantidad){
+
+	this->jugadores->reiniciarCursor();
+	while(this->jugadores->avanzarCursor()){
+		for(int i = 0 ; i < cantidad ; i++){
+			Ficha* nuevoSoldado = new Ficha(soldado);
+
+			this->jugadores->getCursor()->getFichasDisponibles()->add(nuevoSoldado);
+		}
+	}
+}
+
+int BatallaDigital::getCantidadSoldados(){
+	return this->cantidadSoldados;
+}
+
+Lista<Jugador*>* BatallaDigital::getJugadores(){
+	return this->jugadores;
+}
 
 /*
 void BatallaDigital::crearMazoDeCartas(){

@@ -9,13 +9,15 @@
 #define JUGADOR_H_
 #include"Carta.h"
 #include"Lista.h"
+#include"Ficha.h"
 class Jugador{
 
 private:
 
 	Lista<Carta*>* cartas;
-	int solodadoDisponibles;
+	int numeroSoldadosDisponibles;
 	char simbolo;
+	Lista<Ficha*>* FichasDisponibles;
 
 public:
 
@@ -26,6 +28,9 @@ public:
 	char getSimbolo();
 
 	int getSoldadosDisponibles();
+
+	Lista<Ficha*>* getFichasDisponibles();
+
 
 };
 

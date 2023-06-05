@@ -12,9 +12,7 @@ Tablero::Tablero(int limiteX,int limiteY,int limiteZ){
 	this->limiteY = limiteY;
 	this->limiteZ = limiteZ;
 	this->tablero = new Lista<Lista<Lista<Casillero*>*>*>();
-	this->crearTablero();
-
-
+	//this->crearTablero();
 }
 
 Lista<Lista<Lista<Casillero*>*>*>* Tablero::getTablero(){
@@ -58,3 +56,14 @@ int Tablero::getLimiteZ(){
 	return this->limiteZ;
 }
 
+void Tablero::setLimiteX(int nuevoLimite){
+	this->limiteX = nuevoLimite;
+}
+
+void Tablero::setLimiteY(int nuevoLimite){
+	this->limiteY = nuevoLimite;
+}
+
+void Tablero::setLimiteZ(int nuevoLimite){
+	this->limiteZ = nuevoLimite;
+}
