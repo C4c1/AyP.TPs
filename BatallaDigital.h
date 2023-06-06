@@ -143,7 +143,7 @@ public:
 
 	bool tieneSoldados(Jugador* jugador);
 
-	void colocarMina();
+	bool colocarMina(Jugador* jugador,Coordenada* posicion);
 
 
 

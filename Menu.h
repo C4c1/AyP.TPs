@@ -44,7 +44,7 @@ public:
 
 	void agregarDireccionVlidaDeMovimiento(Ficha* ficha, Lista<Casillero*>* casilleros, int posicionX,int posicionY,int posicionZ);
 
-	void aniadirMinaEnTablero(Tablero* tablero,Jugador* jugador);
+	void aniadirMinaEnTablero(Jugador* jugador);
 
 	EstadoDelJUego revisarEstadoDeJuego();
 

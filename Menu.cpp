@@ -197,9 +197,10 @@ void Menu::iniciarPartida(){
 			Jugador* jugador = this->juego->getJugadores()->getCursor();
 			if(this->juego->tieneSoldados(jugador) == true){
 
-
-
 				this->juego->mostrarTableroParaJugador(jugador->getSimbolo());
+				this->aniadirMinaEnTablero(jugador);
+				this->juego->mostrarTableroParaJugador(jugador->getSimbolo());
+				cout<<"al principio JUGADOR: "<<jugador->getSimbolo()<<endl;
 				this->jugarTurno(jugador);
 				this->juego->mostrarTableroParaJugador(jugador->getSimbolo());
 			}
@@ -218,6 +219,8 @@ void Menu::iniciarPartida(){
 
 	if(this->estado == empate){
 		cout<<" - EMPATE - "<<endl;
+	}else if(this->estado == existeGanador){
+		cout<<" - HAY UN GANADOR - "<<endl;
 	}
 }
 
@@ -427,6 +430,25 @@ EstadoDelJUego Menu::revisarEstadoDeJuego(){
 
 }
 
+void Menu::aniadirMinaEnTablero(Jugador* jugador){
+	Coordenada* posicion = new Coordenada(0,0,0);
+	bool seMino = false;
+	do{
+		cout<<"Ingrese coordenadas para colocar mina"<<endl;
+		posicion->setPosicionX(this->validarPosicion(0,this->juego->getTablero()->getLimiteX(),"Coordenada X: "));
+		posicion->setPosicionY(this->validarPosicion(0,this->juego->getTablero()->getLimiteY(),"Coordenada Y: "));
+		posicion->setPosicionZ(this->validarPosicion(0,5,"Coordenada Z: "));
+		cout<<" antes "<<endl;
+		if(this->juego->colocarMina(jugador,posicion) == true){
+			cout<<" despues "<<endl;
+			seMino = true;
+		}else{
+			cout<<" Posicion no disponible, Ingrese Otra "<<endl;
+		}
+
+	}while(seMino == false);
+
+}
 
 
 

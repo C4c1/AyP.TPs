@@ -9,7 +9,7 @@
 #define CARTA_H_
 #include<string>
 
-typedef enum Tipo {CartaAtaqueQuimico, cartaDeBarco, cartaDeAvionRadar};
+enum Tipo {CartaAtaqueQuimico, cartaDeBarco, cartaDeAvionRadar};
 
 class Carta{
 
