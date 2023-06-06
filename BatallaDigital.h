@@ -137,7 +137,7 @@ public:
 
 	bool moverFicha(Casillero* actual, Casillero* destino, Ficha* aMover);
 
-	Lista<Ficha*>* buscarDueñoDeFicha(std::string nombre);
+	Lista<Ficha*>* buscarDuenioDeFicha(std::string nombre);
 
 	void removerFichaDeLista(Coordenada* posicion,Lista<Ficha*>* lista);
 

@@ -233,9 +233,9 @@ bool BatallaDigital::moverFicha(Casillero* actual, Casillero* destino, Ficha* aM
 		destino->setEstado(ocupado);
 	}else if(destino->getFicha()->getSimbolo() == aMover->getSimbolo()){
 
-		this->removerFichaDeLista(destino->getCoordenada(),this->buscarDueñoDeFicha(destino->getFicha()->getNombreJugador()));
+		this->removerFichaDeLista(destino->getCoordenada(),this->buscarDuenioDeFicha(destino->getFicha()->getNombreJugador()));
 		destino->setFicha(NULL);
-		this->removerFichaDeLista(aMover->getCoordenada(),this->buscarDueñoDeFicha(aMover->getNombreJugador()));
+		this->removerFichaDeLista(aMover->getCoordenada(),this->buscarDuenioDeFicha(aMover->getNombreJugador()));
 		actual->setFicha(NULL);
 		actual->setEstado(libre);
 		destino->setEstado(libre);
@@ -243,7 +243,7 @@ bool BatallaDigital::moverFicha(Casillero* actual, Casillero* destino, Ficha* aM
 	return true;
 }
 
-Lista<Ficha*>* BatallaDigital::buscarDueñoDeFicha(string nombre){
+Lista<Ficha*>* BatallaDigital::buscarDuenioDeFicha(string nombre){
 	Lista<Ficha*>* fichas = NULL;
 	Lista<Jugador*>* jugadores = this->jugadores;
 
@@ -341,7 +341,7 @@ bool BatallaDigital::colocarMina(Jugador* jugador,Coordenada* posicion){
 			cout<<" cuatro "<<endl;
 			Lista<Ficha*>fichas;
 			cout<<" a "<<endl;
-			this->removerFichaDeLista(casillero->getCoordenada(),this->buscarDueñoDeFicha(casillero->getFicha()->getNombreJugador()));
+			this->removerFichaDeLista(casillero->getCoordenada(),this->buscarDuenioDeFicha(casillero->getFicha()->getNombreJugador()));
 			cout<<" ab "<<endl;
 			casillero->setEstado(bloqueado);
 			casillero->setFicha(NULL);
