@@ -68,6 +68,60 @@ void BatallaDigital::mostrarTablero(){
 
 }
 
+void BatallaDigital::mostrarTableroParaJugador(std::string nombre){
+
+	this->tablero->getTablero()->reiniciarCursor();
+	int numeroCapa  = 1;
+
+	cout<<" - TABLERO JUGADOR: "<<nombre<<" - "<<endl;
+	cout<<endl;
+
+
+	while(this->tablero->getTablero()->avanzarCursor()){
+
+		cout<<"Capa"<<numeroCapa<<endl;
+		cout<<endl;
+		this->tablero->getTablero()->getCursor()->reiniciarCursor();
+		//cout<<" hola 1"<<endl;
+		while(this->tablero->getTablero()->getCursor()->avanzarCursor()){
+			//cout<<" hola 2"<<endl;
+			this->tablero->getTablero()->getCursor()->getCursor()->reiniciarCursor();
+			//cout<<" hola 3"<<endl;
+			while(this->tablero->getTablero()->getCursor()->getCursor()->avanzarCursor()){
+				Casillero* casillero = this->tablero->getTablero()->getCursor()->getCursor()->getCursor();
+				//cout<<" hola 4"<<endl;
+				if(casillero->getFicha() != NULL){
+					//cout<<" hola 5"<<endl;
+
+					if(casillero->getFicha()->getNombreJugador() == nombre){
+						string simbolo = casillero->getFicha()->getSimbolo();
+						cout<<" "<<simbolo;
+					}else{
+						string simbolo = casillero->getSimbolo();
+						cout<<" "<<simbolo;
+					}
+
+
+				}else{
+					//cout<<" hola 6"<<endl;
+					string simbolo = casillero->getSimbolo();
+					cout<<" "<<simbolo;
+
+				}
+
+			}
+			cout<<endl;
+		}
+		numeroCapa++;
+		cout<<endl;
+	}
+
+
+
+}
+
+
+
 Tablero* BatallaDigital::getTablero(){
 	return this->tablero;
 }
@@ -229,6 +283,25 @@ void BatallaDigital::removerFichaDeLista(Coordenada* posicion,Lista<Ficha*>* lis
 	}
 
 }
+
+bool BatallaDigital::tieneSoldados(Jugador* jugador){
+	int contadorSoldados = 0;
+
+	Lista<Ficha*>* fichas = jugador->getFichasDisponibles();
+	fichas->reiniciarCursor();
+	while(fichas->avanzarCursor()){
+		if(fichas->getCursor()->getSimbolo() == "S" ){
+			contadorSoldados++;
+		}
+	}
+
+	if(contadorSoldados == 0){
+		return false;
+	}else{
+		return true;
+	}
+}
+
 
 /*
 void BatallaDigital::moverFicha(Ficha* ficha){

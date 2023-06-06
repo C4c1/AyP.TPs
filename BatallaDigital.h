@@ -37,6 +37,8 @@ public:
 
 	void mostrarTablero();
 
+	void mostrarTableroParaJugador(std::string nombre);
+
 	void agregarJugadores(int cantidad);
 
 	Tablero* getTablero();
@@ -138,6 +140,12 @@ public:
 	Lista<Ficha*>* buscarDueñoDeFicha(std::string nombre);
 
 	void removerFichaDeLista(Coordenada* posicion,Lista<Ficha*>* lista);
+
+	bool tieneSoldados(Jugador* jugador);
+
+	void colocarMina();
+
+
 
 /*
 void moverFicha(Ficha* ficha);

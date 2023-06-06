@@ -7,14 +7,16 @@
 #include"Menu.h"
 using namespace std;
 
+
 Menu::Menu(){
 	this->juego = new BatallaDigital();
+	this->estado = finalizado;
 }
 
 void Menu::iniciarJuego(){
+	this->estado = enJuego;
 
 	cout<<"--BATALLA DIGITAL--"<<endl;
-
 
 	this->juego->getTablero()->setLimiteX(6);
 	this->juego->getTablero()->setLimiteY(6);
@@ -27,10 +29,10 @@ void Menu::iniciarJuego(){
 	cout<<"cantidad: "<<this->juego->getCantidadSoldados()<<endl;
 	this->juego->aniadirSoldadosAJugador(this->juego->getCantidadSoldados());
 
-	this->aniadirSoldadosEnTablero(juego->getTablero(),juego->getJugadores());
+	this->aniadirSoldadosEnTablero(this->juego->getTablero(),this->juego->getJugadores());
 
-	this->juego->mostrarTablero();
-	this->juego->mostrarTablerocasilleroBloqueados();
+	//this->juego->mostrarTablero();
+	//this->juego->mostrarTablerocasilleroBloqueados();
 /*
 	//cout<<this->seleccionarFicha(juego->getJugadores()->get(1))->getSimbolo()<<endl;
 	Casillero* c =this->seleccionarDireccionAMoverSoldado(this->seleccionarFicha(juego->getJugadores()->get(1)));
@@ -75,6 +77,10 @@ void Menu::aniadirSoldadosEnTablero(Tablero* tablero, Lista<Jugador*>* jugadores
 		int contadorSoldado = 1;
 
 		Lista<Ficha*> * fichas = jugadores->getCursor()->getFichasDisponibles();
+		string nombreJugador = jugadores->getCursor()->getSimbolo();
+
+		this->juego->mostrarTableroParaJugador(nombreJugador);
+
 		fichas->reiniciarCursor();
 		while(fichas->avanzarCursor()){
 			Ficha* soldado = fichas->getCursor();
@@ -82,7 +88,8 @@ void Menu::aniadirSoldadosEnTablero(Tablero* tablero, Lista<Jugador*>* jugadores
 			cout<<"	Jugador "<<jugadores->getCursor()->getSimbolo()<<" || "<<"Soldado N°: "<<contadorSoldado<<endl;
 
 			this->juego->colocarFicha(soldado,this->validarCasilla("S","A"));
-			this->juego->mostrarTablero();
+			this->juego->mostrarTableroParaJugador(nombreJugador);
+			//this->juego->mostrarTablero();
 			contadorSoldado++;
 		}
 
@@ -187,17 +194,31 @@ void Menu::iniciarPartida(){
 
 		while(this->juego->getJugadores()->avanzarCursor()){
 
-
 			Jugador* jugador = this->juego->getJugadores()->getCursor();
-			cout<<"al principio JUGADOR: "<<jugador->getSimbolo()<<endl;
-			this->jugarTurno(jugador);
-			cout<<"1 al final JUGADOR: "<<this->juego->getJugadores()->getCursor()->getSimbolo()<<endl;
-			this->juego->mostrarTablero();
-			this->juego->mostrarTablerocasilleroBloqueados();
-			cout<<"2 al final JUGADOR: "<<this->juego->getJugadores()->getCursor()->getSimbolo()<<endl;
+			if(this->juego->tieneSoldados(jugador) == true){
+
+
+
+				this->juego->mostrarTableroParaJugador(jugador->getSimbolo());
+				this->jugarTurno(jugador);
+				this->juego->mostrarTableroParaJugador(jugador->getSimbolo());
+			}
+
+			//cout<<"al principio JUGADOR: "<<jugador->getSimbolo()<<endl;
+
+			//cout<<"1 al final JUGADOR: "<<this->juego->getJugadores()->getCursor()->getSimbolo()<<endl;
+			//this->juego->mostrarTablero();
+			//this->juego->mostrarTablerocasilleroBloqueados();
+			//cout<<"2 al final JUGADOR: "<<this->juego->getJugadores()->getCursor()->getSimbolo()<<endl;
 		}
 
-	}while(2>1);
+		this->estado = this->revisarEstadoDeJuego();
+
+	}while(this->estado == enJuego);
+
+	if(this->estado == empate){
+		cout<<" - EMPATE - "<<endl;
+	}
 }
 
 void Menu::jugarTurno(Jugador* jugador){
@@ -360,6 +381,48 @@ bool Menu::tieneFichaDeMisomoJUgador(Ficha* ficha, Casillero* aRevisar){
 		}else{
 			return false;
 		}
+	}
+}
+
+
+EstadoDelJUego Menu::revisarEmpate(){
+	bool esEmpate = true;
+
+	this->juego->getJugadores()->reiniciarCursor();
+
+	while(this->juego->getJugadores()->avanzarCursor() && esEmpate == false){
+		Jugador* jugador = this->juego->getJugadores()->getCursor();
+		if(this->juego->tieneSoldados(jugador) == true ){
+			esEmpate = false;
+		}
+	}
+
+	if(esEmpate == true){
+		return empate;
+	}else{
+		return enJuego;
+	}
+
+}
+
+EstadoDelJUego Menu::revisarEstadoDeJuego(){
+	int contador = 0;
+
+	this->juego->getJugadores()->reiniciarCursor();
+
+	while(this->juego->getJugadores()->avanzarCursor()){
+		Jugador* jugador = this->juego->getJugadores()->getCursor();
+		if(this->juego->tieneSoldados(jugador) == true ){
+			contador ++;
+		}
+	}
+	cout<<"Cuantos jugadore tienen Soldados: "<<contador<<endl;
+	if(contador == 0){
+		return empate;
+	}else if(contador == 1){
+		return existeGanador;
+	}else{
+		return enJuego;
 	}
 
 }

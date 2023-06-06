@@ -10,11 +10,13 @@
 #include"BatallaDigital.h"
 #include<string>
 #include<iostream>
+enum EstadoDelJUego {enJuego,finalizado,empate,existeGanador};
 
 class Menu{
 private:
 
 	BatallaDigital* juego;
+	EstadoDelJUego estado;
 
 public:
 
@@ -41,6 +43,17 @@ public:
 	bool tieneFichaDeMisomoJUgador(Ficha* ficha, Casillero* aRevisar);
 
 	void agregarDireccionVlidaDeMovimiento(Ficha* ficha, Lista<Casillero*>* casilleros, int posicionX,int posicionY,int posicionZ);
+
+	void aniadirMinaEnTablero(Tablero* tablero,Jugador* jugador);
+
+	EstadoDelJUego revisarEstadoDeJuego();
+
+	EstadoDelJUego revisarEmpate();
+
+	EstadoDelJUego revisarGanador();
+
+
+
 
 };
 

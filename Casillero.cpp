@@ -15,6 +15,7 @@ Casillero::Casillero(int posicionX,int posicionY,int posicionZ){
 	this->simbolo = "*";
 	this->ficha = NULL;
 	this->estado = libre;
+	this->numeroDeturnosBloqueado = 0;
 
 }
 

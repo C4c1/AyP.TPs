@@ -12,8 +12,8 @@
 #include"Ficha.h"
 #define NULL 0
 
-typedef enum TipoTerreno {tierra,agua,aire};
-typedef enum Estado {libre,ocupado,bloqueado};
+enum TipoTerreno {tierra,agua,aire};
+enum Estado {libre,ocupado,bloqueado};
 
 class Casillero{
 
@@ -24,6 +24,7 @@ private:
 	TipoTerreno terreno;
 	Ficha* ficha;
 	Estado estado;
+	int numeroDeturnosBloqueado;
 
 public:
 
