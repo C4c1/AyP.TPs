@@ -19,10 +19,11 @@ private:
 	TipoFicha tipoFicha;
 	std::string simbolo;
 	Coordenada* coordenadas;
+	std::string nombreJugador;
 
 public:
 
-	Ficha(TipoFicha tipoFicha);
+	Ficha(TipoFicha tipoFicha,std::string nombre);
 
 	TipoFicha getTipoFicha();
 
@@ -31,6 +32,8 @@ public:
 	Coordenada* getCoordenada();
 
 	void setCoordenada(Coordenada* nuevaCoordenada);
+
+	std::string getNombreJugador();
 
 };
 

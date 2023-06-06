@@ -17,7 +17,7 @@ void Menu::iniciarJuego(){
 
 
 	this->juego->getTablero()->setLimiteX(6);
-	this->juego->getTablero()->setLimiteY(4);
+	this->juego->getTablero()->setLimiteY(6);
 	this->juego->getTablero()->setLimiteZ(6);
 	this->juego->getTablero()->crearTablero();
 	this->juego->cargarMapa();
@@ -31,8 +31,13 @@ void Menu::iniciarJuego(){
 
 	this->juego->mostrarTablero();
 	this->juego->mostrarTablerocasilleroBloqueados();
+/*
+	//cout<<this->seleccionarFicha(juego->getJugadores()->get(1))->getSimbolo()<<endl;
+	Casillero* c =this->seleccionarDireccionAMoverSoldado(this->seleccionarFicha(juego->getJugadores()->get(1)));
 
-	cout<<this->seleccionarFicha(juego->getJugadores()->get(1))->getSimbolo()<<endl;
+	cout<<c->getCoordenada()->getPosicionX()<<c->getCoordenada()->getPosicionY()<<c->getCoordenada()->getPosicionZ()<<endl;
+*/
+	this->iniciarPartida();
 
 }
 
@@ -176,50 +181,188 @@ Ficha* Menu::seleccionarFicha(Jugador* jugador){
 
 void Menu::iniciarPartida(){
 
-	this->juego->getJugadores()->reiniciarCursor();
+	do{
 
-	while(this->juego->getJugadores()->avanzarCursor()){
+		this->juego->getJugadores()->reiniciarCursor();
 
-		Jugador* jugador = this->juego->getJugadores()->getCursor();
+		while(this->juego->getJugadores()->avanzarCursor()){
 
 
+			Jugador* jugador = this->juego->getJugadores()->getCursor();
+			cout<<"al principio JUGADOR: "<<jugador->getSimbolo()<<endl;
+			this->jugarTurno(jugador);
+			cout<<"1 al final JUGADOR: "<<this->juego->getJugadores()->getCursor()->getSimbolo()<<endl;
+			this->juego->mostrarTablero();
+			this->juego->mostrarTablerocasilleroBloqueados();
+			cout<<"2 al final JUGADOR: "<<this->juego->getJugadores()->getCursor()->getSimbolo()<<endl;
+		}
 
-	}
+	}while(2>1);
 }
 
-void Menu::moverFicha(Ficha* ficha){
+void Menu::jugarTurno(Jugador* jugador){
+
+	cout<<"Turno jugador N°: "<<jugador->getSimbolo()<<endl;
+	cout<<" - Mover Ficha - "<<endl;
+	Ficha* fichaAMover = this->seleccionarFicha(jugador);
+	Casillero* actual = this->juego->buscarCasillero(fichaAMover->getCoordenada());
+	Casillero* destino = this->seleccionarDireccionAMoverSoldado(fichaAMover);
+	this->juego->moverFicha(actual,destino,fichaAMover);
 
 }
 
-Casillero* Menu::moverSoldado(Ficha* ficha){
+Casillero* Menu::seleccionarDireccionAMoverSoldado(Ficha* ficha){
+	Casillero* nuevaPosicion;
+	bool seleccionValida = false;
+	int contador = 1;
+	Lista<Casillero*>* casilleros = new Lista<Casillero*>();
 
-	if((ficha->getCoordenada()->getPosicionX() - 1) >= 1){
+		//cout<<"HOLA "<<(ficha->getCoordenada()->getPosicionX() - 1)<<endl;
 
-		Casillero* casillero = this->juego->buscarCasillero(ficha->getCoordenada()->getPosicionX() - 1,ficha->getCoordenada()->getPosicionY(),ficha->getCoordenada()->getPosicionZ());
-		if(casillero->getTipoTerreno() != agua && casillero->getFicha()){
+		if((ficha->getCoordenada()->getPosicionX() - 1) >= 1){
 
-			cout<< "1 - Mover a: "<<"("<<ficha->getCoordenada()->getPosicionX() - 1<<","<<ficha->getCoordenada()->getPosicionY()<<","<<ficha->getCoordenada()->getPosicionZ()<<")"<<endl;
+			Casillero* casillero = this->juego->buscarCasillero(ficha->getCoordenada()->getPosicionX() - 1,ficha->getCoordenada()->getPosicionY(),ficha->getCoordenada()->getPosicionZ());
+			cout<<"HOLA, si es mayor "<<endl;
+			cout<<"nombre de "<<endl;
+			if(casillero->getTipoTerreno() != agua && this->tieneFichaDeMisomoJUgador(ficha,casillero) == false){
+
+				//cout<<contador<< " - Mover a: "<<"("<<ficha->getCoordenada()->getPosicionX() - 1<<","<<ficha->getCoordenada()->getPosicionY()<<","<<ficha->getCoordenada()->getPosicionZ()<<")"<<endl;
+				casilleros->add(casillero);
+				contador++;
+			}
+
+		}
+
+		if((ficha->getCoordenada()->getPosicionX() + 1) <= this->juego->getTablero()->getLimiteX()){
+
+			Casillero* casillero = this->juego->buscarCasillero(ficha->getCoordenada()->getPosicionX() + 1,ficha->getCoordenada()->getPosicionY(),ficha->getCoordenada()->getPosicionZ());
+			if(casillero->getTipoTerreno() != agua && this->tieneFichaDeMisomoJUgador(ficha,casillero) == false){
+
+				//cout<<contador<< " - Mover a: "<<"("<<ficha->getCoordenada()->getPosicionX() + 1<<","<<ficha->getCoordenada()->getPosicionY()<<","<<ficha->getCoordenada()->getPosicionZ()<<")"<<endl;
+				casilleros->add(casillero);
+				contador++;
+			}
+
+		}
+
+		if((ficha->getCoordenada()->getPosicionY() - 1) >= 1){
+
+			Casillero* casillero = this->juego->buscarCasillero(ficha->getCoordenada()->getPosicionX(),ficha->getCoordenada()->getPosicionY() - 1,ficha->getCoordenada()->getPosicionZ());
+			if(casillero->getTipoTerreno() != agua && this->tieneFichaDeMisomoJUgador(ficha,casillero) == false){
+
+				//cout<<contador<< " - Mover a: "<<"("<<ficha->getCoordenada()->getPosicionX()<<","<<ficha->getCoordenada()->getPosicionY() - 1 <<","<<ficha->getCoordenada()->getPosicionZ()<<")"<<endl;
+				casilleros->add(casillero);
+				contador++;
+			}
+
+		}
+
+		if((ficha->getCoordenada()->getPosicionY() + 1) <= this->juego->getTablero()->getLimiteY()){
+
+			Casillero* casillero = this->juego->buscarCasillero(ficha->getCoordenada()->getPosicionX(),ficha->getCoordenada()->getPosicionY() + 1,ficha->getCoordenada()->getPosicionZ());
+			if(casillero->getTipoTerreno() != agua && this->tieneFichaDeMisomoJUgador(ficha,casillero) == false){
+
+				//cout<<contador<< " - Mover a: "<<"("<<ficha->getCoordenada()->getPosicionX()<<","<<ficha->getCoordenada()->getPosicionY() + 1 <<","<<ficha->getCoordenada()->getPosicionZ()<<")"<<endl;
+				casilleros->add(casillero);
+				contador++;
+			}
+
+		}
+
+		if((ficha->getCoordenada()->getPosicionX() - 1) >= 1 && (ficha->getCoordenada()->getPosicionY() - 1) >= 1 ){
+
+			Casillero* casillero = this->juego->buscarCasillero(ficha->getCoordenada()->getPosicionX() - 1,ficha->getCoordenada()->getPosicionY() - 1,ficha->getCoordenada()->getPosicionZ());
+			if(casillero->getTipoTerreno() != agua && this->tieneFichaDeMisomoJUgador(ficha,casillero) == false){
+
+				//cout<<contador<< " - Mover a: "<<"("<<ficha->getCoordenada()->getPosicionX() - 1 <<","<<ficha->getCoordenada()->getPosicionY() - 1 <<","<<ficha->getCoordenada()->getPosicionZ()<<")"<<endl;
+				casilleros->add(casillero);
+				contador++;
+			}
+
+		}
+
+		if((ficha->getCoordenada()->getPosicionX() - 1) >= 1 && (ficha->getCoordenada()->getPosicionY() + 1) <= this->juego->getTablero()->getLimiteY() ){
+
+			Casillero* casillero = this->juego->buscarCasillero(ficha->getCoordenada()->getPosicionX() - 1,ficha->getCoordenada()->getPosicionY() + 1,ficha->getCoordenada()->getPosicionZ());
+			if(casillero->getTipoTerreno() != agua && this->tieneFichaDeMisomoJUgador(ficha,casillero) == false){
+
+				//cout<<contador<< " - Mover a: "<<"("<<ficha->getCoordenada()->getPosicionX() - 1 <<","<<ficha->getCoordenada()->getPosicionY() + 1 <<","<<ficha->getCoordenada()->getPosicionZ()<<")"<<endl;
+				casilleros->add(casillero);
+				contador++;
+			}
+
+		}
+
+		if((ficha->getCoordenada()->getPosicionX() + 1) <= this->juego->getTablero()->getLimiteX() && (ficha->getCoordenada()->getPosicionY() - 1) >= 1){
+
+			Casillero* casillero = this->juego->buscarCasillero(ficha->getCoordenada()->getPosicionX() + 1,ficha->getCoordenada()->getPosicionY() - 1,ficha->getCoordenada()->getPosicionZ());
+			if(casillero->getTipoTerreno() != agua && this->tieneFichaDeMisomoJUgador(ficha,casillero) == false){
+
+				//cout<<contador<< " - Mover a: "<<"("<<ficha->getCoordenada()->getPosicionX() + 1 <<","<<ficha->getCoordenada()->getPosicionY() - 1 <<","<<ficha->getCoordenada()->getPosicionZ()<<")"<<endl;
+				casilleros->add(casillero);
+				contador++;
+			}
+
+		}
+
+		if((ficha->getCoordenada()->getPosicionX() + 1) <= this->juego->getTablero()->getLimiteX() && (ficha->getCoordenada()->getPosicionY() + 1) <= this->juego->getTablero()->getLimiteY() ){
+
+			Casillero* casillero = this->juego->buscarCasillero(ficha->getCoordenada()->getPosicionX() + 1,ficha->getCoordenada()->getPosicionY() + 1,ficha->getCoordenada()->getPosicionZ());
+			if(casillero->getTipoTerreno() != agua && this->tieneFichaDeMisomoJUgador(ficha,casillero) == false){
+
+				//cout<<contador<< " - Mover a: "<<"("<<ficha->getCoordenada()->getPosicionX() + 1 <<","<<ficha->getCoordenada()->getPosicionY() + 1 <<","<<ficha->getCoordenada()->getPosicionZ()<<")"<<endl;
+				casilleros->add(casillero);
+				contador++;
+			}
+
+		}
+
+		casilleros->reiniciarCursor();
+		int indice = 1;
+		while(casilleros->avanzarCursor()){
+			Casillero* aMostrar = casilleros->getCursor();
+
+			cout<<indice<< " - Mover a: "<<"("<<aMostrar->getCoordenada()->getPosicionX()<<","<<aMostrar->getCoordenada()->getPosicionY()<<","<<aMostrar->getCoordenada()->getPosicionZ()<<")"<<endl;
+			indice++;
+
+		}
+
+		int opcion = this->validarPosicion(0,contador,"Seleccione una opcion: ");
+
+		return casilleros->get(opcion);
+}
+
+/*
+void Menu::agregarDireccionVlidaDeMovimiento(Ficha* ficha, Lista<Casillero*>* casilleros, int posicionX,int posicionY,int posicionZ){
+
+	if((ficha->getCoordenada()->getPosicionX() + 1) <= this->juego->getTablero()->getLimiteX() && (ficha->getCoordenada()->getPosicionY() + 1) <= this->juego->getTablero()->getLimiteY() ){
+
+		Casillero* casillero = this->juego->buscarCasillero(ficha->getCoordenada()->getPosicionX() + 1,ficha->getCoordenada()->getPosicionY() + 1,ficha->getCoordenada()->getPosicionZ());
+		if(casillero->getTipoTerreno() != agua){
+
+			//cout<<contador<< " - Mover a: "<<"("<<ficha->getCoordenada()->getPosicionX() + 1 <<","<<ficha->getCoordenada()->getPosicionY() + 1 <<","<<ficha->getCoordenada()->getPosicionZ()<<")"<<endl;
+			casilleros->add(casillero);
+			//contador++;
 		}
 
 	}
 
-	if((ficha->getCoordenada()->getPosicionX() + 1) <= this->juego->getTablero()->getLimiteX()){
-
-		Casillero* casillero = this->juego->buscarCasillero(ficha->getCoordenada()->getPosicionX() + 1,ficha->getCoordenada()->getPosicionY(),ficha->getCoordenada()->getPosicionZ());
-
-		cout<< "1 - Mover a: "<<"("<<ficha->getCoordenada()->getPosicionX() + 1<<","<<ficha->getCoordenada()->getPosicionY()<<","<<ficha->getCoordenada()->getPosicionZ()<<")"<<endl;
-
-	}
-
-	if((ficha->getCoordenada()->getPosicionY() - 1) >= 1){
-
-	}
-
-	if((ficha->getCoordenada()->getPosicionX() - 1) >= 1){
-
-	}
 }
+*/
 
+bool Menu::tieneFichaDeMisomoJUgador(Ficha* ficha, Casillero* aRevisar){
+
+	if(aRevisar->getFicha() == NULL){
+		return false;
+	}else{
+		if(ficha->getNombreJugador() == aRevisar->getFicha()->getNombreJugador()){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+}
 
 
 

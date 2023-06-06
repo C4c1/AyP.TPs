@@ -34,9 +34,13 @@ public:
 
 	void iniciarPartida();
 
-	void moverFicha(Ficha* ficha);
+	void jugarTurno(Jugador* jugador);
 
-	Casillero* moverSoldado(Ficha* ficha);
+	Casillero* seleccionarDireccionAMoverSoldado(Ficha* ficha);
+
+	bool tieneFichaDeMisomoJUgador(Ficha* ficha, Casillero* aRevisar);
+
+	void agregarDireccionVlidaDeMovimiento(Ficha* ficha, Lista<Casillero*>* casilleros, int posicionX,int posicionY,int posicionZ);
 
 };
 

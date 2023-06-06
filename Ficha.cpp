@@ -7,9 +7,10 @@
 using namespace std;
 #include"Ficha.h"
 
-Ficha::Ficha(TipoFicha tipoFicha){
+Ficha::Ficha(TipoFicha tipoFicha, string nombre){
 	this->tipoFicha = tipoFicha;
 	this->coordenadas = NULL;
+	this->nombreJugador = nombre;
 	if(this->tipoFicha == soldado){
 		this->simbolo = "S";
 	}else if(this->tipoFicha == barco){
@@ -37,4 +38,7 @@ void Ficha::setCoordenada(Coordenada* nuevaCoordenada){
 	this->coordenadas = nuevaCoordenada;
 }
 
+string Ficha::getNombreJugador(){
+	return this->nombreJugador;
+}
 

@@ -129,9 +129,16 @@ public:
 
 }
 
-Casillero* buscarCasillero(Coordenada* Coordenada);
+	Casillero* buscarCasillero(Coordenada* Coordenada);
 
-Casillero* buscarCasillero(int posicionX,int posicionY,int posicionZ);
+	Casillero* buscarCasillero(int posicionX,int posicionY,int posicionZ);
+
+	bool moverFicha(Casillero* actual, Casillero* destino, Ficha* aMover);
+
+	Lista<Ficha*>* buscarDueñoDeFicha(std::string nombre);
+
+	void removerFichaDeLista(Coordenada* posicion,Lista<Ficha*>* lista);
+
 /*
 void moverFicha(Ficha* ficha);
 

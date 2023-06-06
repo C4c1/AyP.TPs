@@ -146,7 +146,7 @@ void BatallaDigital::aniadirSoldadosAJugador(int cantidad){
 	this->jugadores->reiniciarCursor();
 	while(this->jugadores->avanzarCursor()){
 		for(int i = 0 ; i < cantidad ; i++){
-			Ficha* nuevoSoldado = new Ficha(soldado);
+			Ficha* nuevoSoldado = new Ficha(soldado,this->jugadores->getCursor()->getSimbolo());
 
 			this->jugadores->getCursor()->getFichasDisponibles()->add(nuevoSoldado);
 		}
@@ -169,6 +169,66 @@ Casillero* BatallaDigital::buscarCasillero(int posicionX,int posicionY,int posic
 	return this->tablero->getTablero()->get(posicionZ)->get(posicionY)->get(posicionX);
 }
 
+bool BatallaDigital::moverFicha(Casillero* actual, Casillero* destino, Ficha* aMover){
+	if(destino->getFicha() == NULL){
+		destino->setFicha(aMover);
+		aMover->setCoordenada(destino->getCoordenada());
+		actual->setFicha(NULL);
+		actual->setEstado(libre);
+		destino->setEstado(ocupado);
+	}else if(destino->getFicha()->getSimbolo() == aMover->getSimbolo()){
+
+		this->removerFichaDeLista(destino->getCoordenada(),this->buscarDueñoDeFicha(destino->getFicha()->getNombreJugador()));
+		destino->setFicha(NULL);
+		this->removerFichaDeLista(aMover->getCoordenada(),this->buscarDueñoDeFicha(aMover->getNombreJugador()));
+		actual->setFicha(NULL);
+		actual->setEstado(libre);
+		destino->setEstado(libre);
+	}
+	return true;
+}
+
+Lista<Ficha*>* BatallaDigital::buscarDueñoDeFicha(string nombre){
+	Lista<Ficha*>* fichas = NULL;
+	Lista<Jugador*>* jugadores = this->jugadores;
+
+	stringstream convertiAEntero;
+	int posicion;
+
+	convertiAEntero<<nombre;
+	convertiAEntero>>posicion;
+
+	/*
+	jugadores->reiniciarCursor();
+	while(jugadores->avanzarCursor() && fichas == NULL){
+		if(jugadores->getCursor()->getSimbolo() == nombre){
+			fichas = jugadores->getCursor()->getFichasDisponibles();
+		}
+	}
+	*/
+	return fichas = jugadores->get(posicion)->getFichasDisponibles();
+}
+
+void BatallaDigital::removerFichaDeLista(Coordenada* posicion,Lista<Ficha*>* lista){
+	int contarPosiciones = 1;
+	int posicionABorrar = 0;
+
+	lista->reiniciarCursor();
+	while(lista->avanzarCursor()){
+		Ficha* ficha = lista->getCursor();
+		if(posicion->getPosicionX() == ficha->getCoordenada()->getPosicionX() &&
+				posicion->getPosicionY() == ficha->getCoordenada()->getPosicionY() &&
+				posicion->getPosicionZ() == ficha->getCoordenada()->getPosicionZ()){
+			posicionABorrar = contarPosiciones;
+		}
+		contarPosiciones++;
+	}
+
+	if(posicionABorrar >= 1 && posicionABorrar <= lista->contarElementos()){
+		lista->remover(posicionABorrar);
+	}
+
+}
 
 /*
 void BatallaDigital::moverFicha(Ficha* ficha){
