@@ -239,6 +239,15 @@ bool BatallaDigital::moverFicha(Casillero* actual, Casillero* destino, Ficha* aM
 		actual->setFicha(NULL);
 		actual->setEstado(libre);
 		destino->setEstado(libre);
+
+	}else if(destino->getFicha()->getSimbolo() == "M"){
+
+		this->removerFichaDeLista(aMover->getCoordenada(),this->buscarDuenioDeFicha(aMover->getNombreJugador()));
+		actual->setFicha(NULL);
+		destino->setFicha(NULL);
+		actual->setEstado(libre);
+		destino->setEstado(bloqueado);
+
 	}
 	return true;
 }
@@ -261,9 +270,9 @@ Lista<Ficha*>* BatallaDigital::buscarDuenioDeFicha(string nombre){
 		}
 	}
 	*/
-	cout<<"posicionN: "<<posicion<<" | "<<posicion+1<<endl;
+	//cout<<"posicionN: "<<posicion<<" | "<<posicion+1<<endl;
 	fichas = jugadores->get(posicion)->getFichasDisponibles();
-	cout<<"Tamanio de Lista : "<<fichas->contarElementos()<<endl;
+	//cout<<"Tamanio de Lista : "<<fichas->contarElementos()<<endl;
 	return fichas;
 }
 
@@ -271,32 +280,32 @@ void BatallaDigital::removerFichaDeLista(Coordenada* posicion,Lista<Ficha*>* lis
 	int contarPosiciones = 1;
 	int posicionABorrar = 0;
 
-	cout<<" Tamanio De ListaR: "<<lista->contarElementos()<<endl;
-	cout<<"Coordenada: "<<posicion->getPosicionX()<<posicion->getPosicionY()<<posicion->getPosicionZ()<<endl;
-	cout<<"1- simbolo: "<<lista->get(1)->getSimbolo()<<endl;
-	cout<<"2- simbolo: "<<lista->get(2)->getSimbolo()<<endl;
+	//cout<<" Tamanio De ListaR: "<<lista->contarElementos()<<endl;
+	//cout<<"Coordenada: "<<posicion->getPosicionX()<<posicion->getPosicionY()<<posicion->getPosicionZ()<<endl;
+	//cout<<"1- simbolo: "<<lista->get(1)->getSimbolo()<<endl;
+	//cout<<"2- simbolo: "<<lista->get(2)->getSimbolo()<<endl;
 	//cout<<"1- coordenda: "<<lista->get(1)->getCoordenada()->getPosicionX()<<lista->get(1)->getCoordenada()->getPosicionY()<<lista->get(1)->getCoordenada()->getPosicionZ()<<endl;
 	//cout<<"1- coordenda: "<<lista->get(2)->getCoordenada()->getPosicionX()<<lista->get(2)->getCoordenada()->getPosicionY()<<lista->get(2)->getCoordenada()->getPosicionZ()<<endl;
 
 	lista->reiniciarCursor();
 	while(lista->avanzarCursor()){
-		cout<<" ENTRO "<<endl;
+		//cout<<" ENTRO "<<endl;
 		Ficha* ficha = lista->getCursor();
 
 		if(posicion->getPosicionX() == ficha->getCoordenada()->getPosicionX() &&
 				posicion->getPosicionY() == ficha->getCoordenada()->getPosicionY() &&
 				posicion->getPosicionZ() == ficha->getCoordenada()->getPosicionZ()){
-			cout<<" ENTRO en if "<<endl;
+			//cout<<" ENTRO en if "<<endl;
 			posicionABorrar = contarPosiciones;
 		}
 		contarPosiciones++;
-		cout<<"posicion a Borrar: "<<posicionABorrar<<endl;
-		cout<<"contador posicion: "<<contarPosiciones<<endl;
+		//cout<<"posicion a Borrar: "<<posicionABorrar<<endl;
+		//cout<<"contador posicion: "<<contarPosiciones<<endl;
 	}
-	cout<<" salio de while | posicion a Borrar: "<<posicionABorrar<<endl;
+	//cout<<" salio de while | posicion a Borrar: "<<posicionABorrar<<endl;
 	int tamanioLista = lista->contarElementos();
-	cout<<" salio de while abajo "<<endl;
-	cout<<"Posicion A Borrar: "<<posicionABorrar<<" Tamanio De Lista: "<<tamanioLista<<endl;
+	//cout<<" salio de while abajo "<<endl;
+	//cout<<"Posicion A Borrar: "<<posicionABorrar<<" Tamanio De Lista: "<<tamanioLista<<endl;
 
 	if(posicionABorrar >= 1 && posicionABorrar <= tamanioLista){
 		lista->remover(posicionABorrar);
@@ -327,22 +336,22 @@ bool BatallaDigital::colocarMina(Jugador* jugador,Coordenada* posicion){
 
 	Casillero* casillero = this->buscarCasillero(posicion);
 
-	cout<<" uno "<<endl;
+	//cout<<" uno "<<endl;
 	if(casillero->getEstado() != bloqueado){
-		cout<<" dos "<<endl;
+		//cout<<" dos "<<endl;
 		if(casillero->getEstado() == libre){
-			cout<<" tres "<<endl;
+			//cout<<" tres "<<endl;
 			Ficha* ficha = new Ficha(mina,jugador->getSimbolo());
 			casillero->setFicha(ficha);
 			ficha->setCoordenada(posicion);
 			jugador->getFichasDisponibles()->add(ficha);
 			seMino = true;
 		}else if(casillero->getEstado() == ocupado){
-			cout<<" cuatro "<<endl;
+			//cout<<" cuatro "<<endl;
 			Lista<Ficha*>fichas;
-			cout<<" a "<<endl;
+			//cout<<" a "<<endl;
 			this->removerFichaDeLista(casillero->getCoordenada(),this->buscarDuenioDeFicha(casillero->getFicha()->getNombreJugador()));
-			cout<<" ab "<<endl;
+			//cout<<" ab "<<endl;
 			casillero->setEstado(bloqueado);
 			casillero->setFicha(NULL);
 			seMino = true;

@@ -200,7 +200,7 @@ void Menu::iniciarPartida(){
 				this->juego->mostrarTableroParaJugador(jugador->getSimbolo());
 				this->aniadirMinaEnTablero(jugador);
 				this->juego->mostrarTableroParaJugador(jugador->getSimbolo());
-				cout<<"al principio JUGADOR: "<<jugador->getSimbolo()<<endl;
+				//cout<<"al principio JUGADOR: "<<jugador->getSimbolo()<<endl;
 				this->jugarTurno(jugador);
 				this->juego->mostrarTableroParaJugador(jugador->getSimbolo());
 			}
@@ -236,8 +236,8 @@ void Menu::jugarTurno(Jugador* jugador){
 }
 
 Casillero* Menu::seleccionarDireccionAMoverSoldado(Ficha* ficha){
-	Casillero* nuevaPosicion;
-	bool seleccionValida = false;
+	//Casillero* nuevaPosicion;
+	//bool seleccionValida = false;
 	int contador = 1;
 	Lista<Casillero*>* casilleros = new Lista<Casillero*>();
 
@@ -246,8 +246,8 @@ Casillero* Menu::seleccionarDireccionAMoverSoldado(Ficha* ficha){
 		if((ficha->getCoordenada()->getPosicionX() - 1) >= 1){
 
 			Casillero* casillero = this->juego->buscarCasillero(ficha->getCoordenada()->getPosicionX() - 1,ficha->getCoordenada()->getPosicionY(),ficha->getCoordenada()->getPosicionZ());
-			cout<<"HOLA, si es mayor "<<endl;
-			cout<<"nombre de "<<endl;
+			//cout<<"HOLA, si es mayor "<<endl;
+			//cout<<"nombre de "<<endl;
 			if(casillero->getTipoTerreno() != agua && this->tieneFichaDeMisomoJUgador(ficha,casillero) == false){
 
 				//cout<<contador<< " - Mover a: "<<"("<<ficha->getCoordenada()->getPosicionX() - 1<<","<<ficha->getCoordenada()->getPosicionY()<<","<<ficha->getCoordenada()->getPosicionZ()<<")"<<endl;
@@ -438,12 +438,12 @@ void Menu::aniadirMinaEnTablero(Jugador* jugador){
 		posicion->setPosicionX(this->validarPosicion(0,this->juego->getTablero()->getLimiteX(),"Coordenada X: "));
 		posicion->setPosicionY(this->validarPosicion(0,this->juego->getTablero()->getLimiteY(),"Coordenada Y: "));
 		posicion->setPosicionZ(this->validarPosicion(0,5,"Coordenada Z: "));
-		cout<<" antes "<<endl;
+		//cout<<" antes "<<endl;
 		if(this->juego->colocarMina(jugador,posicion) == true){
-			cout<<" despues "<<endl;
+			//cout<<" despues "<<endl;
 			seMino = true;
 		}else{
-			cout<<" Posicion no disponible, Ingrese Otra "<<endl;
+			cout<<" Posicion no disponible, Ingrese otra "<<endl;
 		}
 
 	}while(seMino == false);

@@ -115,11 +115,14 @@ public:
 						//cout<<" "<<simbolo;
 						cout<<" OCUPADO ";
 
-					}else{
+					}else if(casillero->getEstado() == libre){
 
 						cout<<" LIBRE   ";
 						//string simbolo = this->tablero->getTablero()->getCursor()->getCursor()->getCursor()->getSimbolo();
 						//cout<<" "<<simbolo;
+					}else  if(casillero->getEstado() == bloqueado){
+
+						cout<<" BLOCK   ";
 					}
 
 				}
