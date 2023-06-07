@@ -7,6 +7,8 @@
 
 #ifndef COORDENADA_H_
 #define COORDENADA_H_
+#include<string>
+#include<sstream>
 
 class Coordenada{
 
@@ -31,6 +33,8 @@ public:
 	int getPosicionZ();
 
 	void setPosicionZ(int nuevaPosicionZ);
+
+	std::string verCoordenada();
 
 };
 

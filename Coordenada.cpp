@@ -52,4 +52,24 @@ void Coordenada::setPosicionZ(int nuevaPosicionZ){
 
 }
 
+std::string Coordenada::verCoordenada(){
+
+	std::stringstream ss1;
+	std::stringstream ss2;
+	std::stringstream ss3;
+	std::string x,y,z;
+
+	ss1<<this->posicionX;
+	ss1>>x;
+
+	ss2<<this->posicionY;
+	ss2>>y;
+
+	ss3<<this->posicionZ;
+	ss3>>z;
+
+	std::string texto = "(" + x + "," + y + "," + z + ")";
+	return texto;
+}
+
 

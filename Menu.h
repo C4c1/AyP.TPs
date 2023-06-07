@@ -10,6 +10,7 @@
 #include"BatallaDigital.h"
 #include<string>
 #include<iostream>
+#include<cstdlib>
 enum EstadoDelJUego {enJuego,finalizado,empate,existeGanador};
 
 class Menu{
@@ -52,8 +53,15 @@ public:
 
 	EstadoDelJUego revisarGanador();
 
+	Lista<Casillero*>* generarListaDeCasilleroDisponibles(Ficha* ficha);
 
+	int validarNumero(int numero, int minimo, int maximo, int opcion);
 
+	void SeleccionarCartaAJugar(Jugador* jugador);
+
+	void disparaConBarcosDisponibles(Jugador* jugador);
+
+	Lista<Ficha*>* buscarFichas(Jugador* jugador, TipoFicha tipo);
 
 };
 

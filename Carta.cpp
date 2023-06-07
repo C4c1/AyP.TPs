@@ -7,15 +7,15 @@
 
 #include"Carta.h"
 
-Carta::Carta(Tipo tipo){
+Carta::Carta(TipoCarta tipo){
 	this->tipos = tipo;
 }
 
-Tipo Carta::getTipoCarta(){
+TipoCarta Carta::getTipoCarta(){
 	return this->tipos;
 }
 
-void Carta::setTipoCarta(Tipo nuevoTipo){
+void Carta::setTipoCarta(TipoCarta nuevoTipo){
 	this->tipos = nuevoTipo;
 }
 

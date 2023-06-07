@@ -14,9 +14,6 @@ BatallaDigital::BatallaDigital(){
 	this->cantidadSoldados = 2;
 	this->jugadores = new Lista<Jugador*>();
 
-	//this->mazoDeCartas = new Pila<Carta*>();
-	//this->crearMazoDeCartas();
-
 }
 
 BatallaDigital::BatallaDigital(int limiteX,int limiteY,int limiteZ,int cantidadJugadores,int cantidadSoldados){
@@ -26,8 +23,6 @@ BatallaDigital::BatallaDigital(int limiteX,int limiteY,int limiteZ,int cantidadJ
 	this->cantidadSoldados = cantidadSoldados;
 	this->jugadores = new Lista<Jugador*>();
 
-	//this->mazoDeCartas = new Pila<Carta*>();
-	//this->crearMazoDeCartas();
 
 }
 
@@ -82,16 +77,11 @@ void BatallaDigital::mostrarTableroParaJugador(std::string nombre){
 		cout<<"Capa"<<numeroCapa<<endl;
 		cout<<endl;
 		this->tablero->getTablero()->getCursor()->reiniciarCursor();
-		//cout<<" hola 1"<<endl;
 		while(this->tablero->getTablero()->getCursor()->avanzarCursor()){
-			//cout<<" hola 2"<<endl;
 			this->tablero->getTablero()->getCursor()->getCursor()->reiniciarCursor();
-			//cout<<" hola 3"<<endl;
 			while(this->tablero->getTablero()->getCursor()->getCursor()->avanzarCursor()){
 				Casillero* casillero = this->tablero->getTablero()->getCursor()->getCursor()->getCursor();
-				//cout<<" hola 4"<<endl;
 				if(casillero->getFicha() != NULL){
-					//cout<<" hola 5"<<endl;
 
 					if(casillero->getFicha()->getNombreJugador() == nombre){
 						string simbolo = casillero->getFicha()->getSimbolo();
@@ -103,7 +93,6 @@ void BatallaDigital::mostrarTableroParaJugador(std::string nombre){
 
 
 				}else{
-					//cout<<" hola 6"<<endl;
 					string simbolo1 = casillero->getSimbolo();
 					cout<<" "<<simbolo1;
 
@@ -111,7 +100,6 @@ void BatallaDigital::mostrarTableroParaJugador(std::string nombre){
 
 			}
 			cout<<endl;
-			//cout<<"hola?"<<endl;
 		}
 		numeroCapa++;
 		cout<<endl;
@@ -166,7 +154,6 @@ void BatallaDigital::agregarJugadores(int cantidad){
 		ss << numeroJugador;
 		ss >> simbolo;
 
-		//cout<<"SIMBOLO JUGADOR: "<<simbolo<<endl;
 		Jugador* nuevoJugador = new Jugador(this->cantidadSoldados, simbolo);
 		this->jugadores->add(nuevoJugador);
 
@@ -178,17 +165,31 @@ void BatallaDigital::agregarJugadores(int cantidad){
 bool BatallaDigital::colocarFicha(Ficha* ficha, Coordenada* coordenada){
 
 	Casillero* casillero = this->tablero->getTablero()->get(coordenada->getPosicionZ())->get(coordenada->getPosicionY())->get(coordenada->getPosicionX());
-	//cout<<coordenada->getPosicionX()<<coordenada->getPosicionY()<<coordenada->getPosicionZ()<<endl;
 
-	if(casillero->getEstado() == libre){
+	if(casillero->getEstado() == libre && casillero->getFicha() == NULL){
+
 		casillero->setFicha(ficha);
 		ficha->setCoordenada(coordenada);
 
 		casillero->setEstado(ocupado);
 		return true;
-	}else{
-		return false;
 	}
+
+	if(casillero->getEstado() == libre && casillero->getFicha() != NULL){
+		if(casillero->getFicha()->getTipoFicha() == mina ){
+			stringstream convertirAEntero;
+			ficha->setCoordenada(coordenada);
+			int numeroJugador;
+			convertirAEntero << ficha->getNombreJugador();
+			convertirAEntero  >> numeroJugador;
+			this->removerFichaDeLista(coordenada, this->jugadores->get(numeroJugador)->getFichasDisponibles());
+			casillero->setEstado(bloqueado);
+			casillero->setFicha(NULL);
+			return true;
+		}
+	}
+
+	return false;
 
 }
 
@@ -262,17 +263,8 @@ Lista<Ficha*>* BatallaDigital::buscarDuenioDeFicha(string nombre){
 	convertiAEntero<<nombre;
 	convertiAEntero>>posicion;
 
-	/*
-	jugadores->reiniciarCursor();
-	while(jugadores->avanzarCursor() && fichas == NULL){
-		if(jugadores->getCursor()->getSimbolo() == nombre){
-			fichas = jugadores->getCursor()->getFichasDisponibles();
-		}
-	}
-	*/
-	//cout<<"posicionN: "<<posicion<<" | "<<posicion+1<<endl;
 	fichas = jugadores->get(posicion)->getFichasDisponibles();
-	//cout<<"Tamanio de Lista : "<<fichas->contarElementos()<<endl;
+
 	return fichas;
 }
 
@@ -280,32 +272,22 @@ void BatallaDigital::removerFichaDeLista(Coordenada* posicion,Lista<Ficha*>* lis
 	int contarPosiciones = 1;
 	int posicionABorrar = 0;
 
-	//cout<<" Tamanio De ListaR: "<<lista->contarElementos()<<endl;
-	//cout<<"Coordenada: "<<posicion->getPosicionX()<<posicion->getPosicionY()<<posicion->getPosicionZ()<<endl;
-	//cout<<"1- simbolo: "<<lista->get(1)->getSimbolo()<<endl;
-	//cout<<"2- simbolo: "<<lista->get(2)->getSimbolo()<<endl;
-	//cout<<"1- coordenda: "<<lista->get(1)->getCoordenada()->getPosicionX()<<lista->get(1)->getCoordenada()->getPosicionY()<<lista->get(1)->getCoordenada()->getPosicionZ()<<endl;
-	//cout<<"1- coordenda: "<<lista->get(2)->getCoordenada()->getPosicionX()<<lista->get(2)->getCoordenada()->getPosicionY()<<lista->get(2)->getCoordenada()->getPosicionZ()<<endl;
-
 	lista->reiniciarCursor();
 	while(lista->avanzarCursor()){
-		//cout<<" ENTRO "<<endl;
+
 		Ficha* ficha = lista->getCursor();
 
 		if(posicion->getPosicionX() == ficha->getCoordenada()->getPosicionX() &&
-				posicion->getPosicionY() == ficha->getCoordenada()->getPosicionY() &&
-				posicion->getPosicionZ() == ficha->getCoordenada()->getPosicionZ()){
-			//cout<<" ENTRO en if "<<endl;
+			posicion->getPosicionY() == ficha->getCoordenada()->getPosicionY() &&
+			posicion->getPosicionZ() == ficha->getCoordenada()->getPosicionZ()){
+
 			posicionABorrar = contarPosiciones;
 		}
 		contarPosiciones++;
-		//cout<<"posicion a Borrar: "<<posicionABorrar<<endl;
-		//cout<<"contador posicion: "<<contarPosiciones<<endl;
+
 	}
-	//cout<<" salio de while | posicion a Borrar: "<<posicionABorrar<<endl;
+
 	int tamanioLista = lista->contarElementos();
-	//cout<<" salio de while abajo "<<endl;
-	//cout<<"Posicion A Borrar: "<<posicionABorrar<<" Tamanio De Lista: "<<tamanioLista<<endl;
 
 	if(posicionABorrar >= 1 && posicionABorrar <= tamanioLista){
 		lista->remover(posicionABorrar);
@@ -336,93 +318,109 @@ bool BatallaDigital::colocarMina(Jugador* jugador,Coordenada* posicion){
 
 	Casillero* casillero = this->buscarCasillero(posicion);
 
-	//cout<<" uno "<<endl;
 	if(casillero->getEstado() != bloqueado){
-		//cout<<" dos "<<endl;
 		if(casillero->getEstado() == libre){
-			//cout<<" tres "<<endl;
-			Ficha* ficha = new Ficha(mina,jugador->getSimbolo());
-			casillero->setFicha(ficha);
-			ficha->setCoordenada(posicion);
-			jugador->getFichasDisponibles()->add(ficha);
-			seMino = true;
+			if(casillero->getFicha() == NULL){
+
+				Ficha* ficha = new Ficha(mina,jugador->getSimbolo());
+				casillero->setFicha(ficha);
+				ficha->setCoordenada(posicion);
+				jugador->getFichasDisponibles()->add(ficha);
+				seMino = true;
+
+			}else{
+				if(casillero->getFicha()->getSimbolo() != "M"){
+					Ficha* ficha = new Ficha(mina,jugador->getSimbolo());
+					casillero->setFicha(ficha);
+					ficha->setCoordenada(posicion);
+					jugador->getFichasDisponibles()->add(ficha);
+					seMino = true;
+				}
+			}
+
 		}else if(casillero->getEstado() == ocupado){
-			//cout<<" cuatro "<<endl;
 			Lista<Ficha*>fichas;
-			//cout<<" a "<<endl;
 			this->removerFichaDeLista(casillero->getCoordenada(),this->buscarDuenioDeFicha(casillero->getFicha()->getNombreJugador()));
-			//cout<<" ab "<<endl;
 			casillero->setEstado(bloqueado);
 			casillero->setFicha(NULL);
 			seMino = true;
 
 		}
 	}else{
-		cout<<" cinco "<<endl;
 		seMino = false;
 	}
 
 	return seMino;
 }
 
+Jugador* BatallaDigital::buscarGanador(){
+	Jugador* jugador = NULL;
+	bool encontrado = false;
+	this->jugadores->reiniciarCursor();
+	while(this->jugadores->avanzarCursor() && encontrado == false){
 
-/*
-void BatallaDigital::moverFicha(Ficha* ficha){
+		if(this->tieneSoldados(this->jugadores->getCursor()) == true){
 
-}
-*/
-/*
-Casillero* BatallaDigital::moverSoldado(Ficha* ficha){
+			jugador = this->jugadores->getCursor();
+			encontrado = true;
 
-	if((ficha->getCoordenada()->getPosicionX() - 1) >= 1){
-
-		Casillero* casillero = this->buscarCasillero(ficha->getCoordenada()->getPosicionX() - 1,ficha->getCoordenada()->getPosicionY(),ficha->getCoordenada()->getPosicionZ());
-		if(casillero->getTipoTerreno() != agua && casillero->getFicha()){
-
-			cout<< "1 - Mover a: "<<"("<<ficha->getCoordenada()->getPosicionX() - 1<<","<<ficha->getCoordenada()->getPosicionY()<<","<<ficha->getCoordenada()->getPosicionZ()<<")"<<endl;
 		}
 
 	}
 
-	if((ficha->getCoordenada()->getPosicionX() + 1) <= this->getTablero()->getLimiteX()){
+	return jugador;
+}
 
-		Casillero* casillero = this->buscarCasillero(ficha->getCoordenada()->getPosicionX() + 1,ficha->getCoordenada()->getPosicionY(),ficha->getCoordenada()->getPosicionZ());
+void BatallaDigital::tomarCarta(Jugador* jugador){
 
-		cout<< "1 - Mover a: "<<"("<<ficha->getCoordenada()->getPosicionX() + 1<<","<<ficha->getCoordenada()->getPosicionY()<<","<<ficha->getCoordenada()->getPosicionZ()<<")"<<endl;
+	int numeroRandom = 1; //1 + rand() % 3;
 
+	if(numeroRandom == 1){
+		Carta* carta = new Carta(cartaDeBarco);
+		jugador->getCartas()->add(carta);
+	}else if(numeroRandom == 2){
+		Carta* carta = new Carta(CartaAtaqueQuimico);
+		jugador->getCartas()->add(carta);
+	}else{
+		Carta* carta = new Carta(cartaDeAvionRadar);
+		jugador->getCartas()->add(carta);
 	}
 
-	if((ficha->getCoordenada()->getPosicionY() - 1) >= 1){
 
-	}
+}
 
-	if((ficha->getCoordenada()->getPosicionX() - 1) >= 1){
+void BatallaDigital::dispararConBarcoA(Casillero* casillero){
+	if(casillero->getFicha() != NULL){
+		if(casillero->getFicha()->getTipoFicha() == mina){
+
+			this->removerFichaDeLista(casillero->getFicha()->getCoordenada(),this->buscarDuenioDeFicha(casillero->getFicha()->getNombreJugador()));
+			casillero->setFicha(NULL);
+			casillero->setEstado(bloqueado);
+
+		}else{
+			this->removerFichaDeLista(casillero->getFicha()->getCoordenada(),this->buscarDuenioDeFicha(casillero->getFicha()->getNombreJugador()));
+			casillero->setFicha(NULL);
+			casillero->setEstado(libre);
+		}
 
 	}
 }
 
 
-void BatallaDigital::crearMazoDeCartas(){
-	int contadorCartas = 0;
-	do{
 
-		Carta* cartaAtaqueQuimico = new Carta(CartaAtaqueQuimico);
-		contadorCartas++;
-		this->mazoDeCartas->apilar(cartaAtaqueQuimico);
-		Carta* cartaBarco = new Carta(cartaDeBarco);
-		contadorCartas++;
-		this->mazoDeCartas->apilar(cartaBarco);
-		Carta* cartaAvion = new Carta(cartaDeAvionRadar);
-		contadorCartas++;
-		this->mazoDeCartas->apilar(cartaAvion);
 
-	}while(contadorCartas < 20);
 
-}
 
-Pila<Carta*>* BatallaDigital::getMazoDeCartas(){
-	return this->mazoDeCartas;
-}
-*/
+
+
+
+
+
+
+
+
+
+
+
 
 

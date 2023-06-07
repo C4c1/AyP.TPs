@@ -13,6 +13,7 @@
 #include"Jugador.h"
 #include<iostream>
 #include<sstream>
+#include<cstdlib>
 using namespace std;
 
 class BatallaDigital{
@@ -23,7 +24,6 @@ private:
 	int cantidadJugadores;
 	int cantidadSoldados;
 	Lista<Jugador*>* jugadores;
-	//Pila<Carta*>* mazoDeCartas;
 
 public:
 
@@ -51,9 +51,6 @@ public:
 
 	Lista<Jugador*>* getJugadores();
 
-	//void crearMazoDeCartas();
-
-	//Pila<Carta*>* getMazoDeCartas();
 
 	void mostrarTableroConCoordenadas(){
 
@@ -74,13 +71,11 @@ public:
 					if(casillero->getFicha() != NULL){
 
 						string simbolo = casillero->getFicha()->getSimbolo();
-						//cout<<" "<<simbolo;
 						cout<<"("<<casillero->getCoordenada()->getPosicionX()<<","<<casillero->getCoordenada()->getPosicionY()<<","<<casillero->getCoordenada()->getPosicionZ()<<")  ";
 
 					}else{
 
 						string simbolo = this->tablero->getTablero()->getCursor()->getCursor()->getCursor()->getSimbolo();
-						//cout<<" "<<simbolo;
 						cout<<"("<<casillero->getCoordenada()->getPosicionX()<<","<<casillero->getCoordenada()->getPosicionY()<<","<<casillero->getCoordenada()->getPosicionZ()<<")  ";
 					}
 
@@ -111,15 +106,13 @@ public:
 					Casillero* casillero = this->tablero->getTablero()->getCursor()->getCursor()->getCursor();
 					if(casillero->getEstado() == ocupado){
 
-						//string simbolo = casillero->getFicha()->getSimbolo();
-						//cout<<" "<<simbolo;
+
 						cout<<" OCUPADO ";
 
 					}else if(casillero->getEstado() == libre){
 
 						cout<<" LIBRE   ";
-						//string simbolo = this->tablero->getTablero()->getCursor()->getCursor()->getCursor()->getSimbolo();
-						//cout<<" "<<simbolo;
+
 					}else  if(casillero->getEstado() == bloqueado){
 
 						cout<<" BLOCK   ";
@@ -148,13 +141,14 @@ public:
 
 	bool colocarMina(Jugador* jugador,Coordenada* posicion);
 
+	Jugador* buscarGanador();
 
+	void tomarCarta(Jugador* jugador);
 
-/*
-void moverFicha(Ficha* ficha);
+	bool jugarCarta(Carta* carta,Jugador* jugador);
 
-Casillero* moverSoldado(Ficha* ficha);
-*/
+	void dispararConBarcoA(Casillero* casillero);
+
 };
 
 

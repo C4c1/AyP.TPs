@@ -9,21 +9,21 @@
 #define CARTA_H_
 #include<string>
 
-enum Tipo {CartaAtaqueQuimico, cartaDeBarco, cartaDeAvionRadar};
+enum TipoCarta {CartaAtaqueQuimico, cartaDeBarco, cartaDeAvionRadar};
 
 class Carta{
 
 private:
 
-	Tipo tipos;
+	TipoCarta tipos;
 
 public:
 
-	Carta(Tipo tipo);
+	Carta(TipoCarta tipo);
 
-	Tipo getTipoCarta();
+	TipoCarta getTipoCarta();
 
-	void setTipoCarta(Tipo nuevoTipo);
+	void setTipoCarta(TipoCarta nuevoTipo);
 
 };
 
