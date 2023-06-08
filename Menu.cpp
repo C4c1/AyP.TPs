@@ -453,24 +453,26 @@ void Menu::SeleccionarCartaAJugar(Jugador* jugador){
 }
 
 void Menu::disparaConBarcosDisponibles(Jugador* jugador){
-	cout<<endl;
-	cout<<"Turno jugador N°: "<<jugador->getSimbolo()<<endl;
-	cout<<" - Disparar con barcos - "<<endl;
 
 	Lista<Ficha*>* barcos = this->buscarFichas(jugador,barco);
-	barcos->reiniciarCursor();
-	while(barcos->avanzarCursor()){
-		Ficha* barco = barcos->getCursor();
-		cout<<"Dispara barco en posicion : "<<barco->getCoordenada()->verCoordenada()<<endl;
-		cout<<"Ingrese coordenada de disparo"<<endl;
-		Coordenada* aDisparar = new Coordenada(this->validarPosicion(0,this->juego->getTablero()->getLimiteX(),"Ingrese posicion X: "),
-																	this->validarPosicion(0,this->juego->getTablero()->getLimiteY(),"Ingrese posicion Y: "),
-																	this->validarPosicion(4,this->juego->getTablero()->getLimiteZ(),"Ingrese posicion Z: "));
 
-		this->juego->dispararConBarcoA(this->juego->buscarCasillero(aDisparar));
+	if(!barcos->vacia()){
+		cout<<endl;
+		cout<<"Turno jugador N°: "<<jugador->getSimbolo()<<endl;
+		cout<<" - Disparar con barcos - "<<endl;
+		barcos->reiniciarCursor();
+		while(barcos->avanzarCursor()){
+			Ficha* barco = barcos->getCursor();
+			cout<<"Dispara barco en posicion : "<<barco->getCoordenada()->verCoordenada()<<endl;
+			cout<<"Ingrese coordenada de disparo"<<endl;
+			Coordenada* aDisparar = new Coordenada(this->validarPosicion(0,this->juego->getTablero()->getLimiteX(),"Ingrese posicion X: "),
+																		this->validarPosicion(0,this->juego->getTablero()->getLimiteY(),"Ingrese posicion Y: "),
+																		this->validarPosicion(4,this->juego->getTablero()->getLimiteZ(),"Ingrese posicion Z: "));
 
+			this->juego->dispararConBarcoA(this->juego->buscarCasillero(aDisparar));
+
+		}
 	}
-
 
 }
 
