@@ -11,6 +11,7 @@ using namespace std;
 Menu::Menu(){
 	this->juego = new BatallaDigital();
 	this->estado = finalizado;
+	this->saltarTurno = false;
 }
 
 void Menu::iniciarJuego(){
@@ -29,6 +30,12 @@ void Menu::iniciarJuego(){
 	this->juego->aniadirSoldadosAJugador(this->juego->getCantidadSoldados());
 
 	this->aniadirSoldadosEnTablero(this->juego->getTablero(),this->juego->getJugadores());
+
+
+	Carta* c1 = new Carta(cartaDeAvionRadar);
+	Carta* c2 = new Carta(cartaDeAvionRadar);
+	this->juego->getJugadores()->get(1)->getCartas()->add(c1);
+	this->juego->getJugadores()->get(1)->getCartas()->add(c2);
 
 	this->iniciarPartida();
 
@@ -70,7 +77,7 @@ void Menu::aniadirSoldadosEnTablero(Tablero* tablero, Lista<Jugador*>* jugadores
 		Lista<Ficha*> * fichas = jugadores->getCursor()->getFichasDisponibles();
 		string nombreJugador = jugadores->getCursor()->getSimbolo();
 
-		this->juego->mostrarTableroParaJugador(nombreJugador);
+		this->juego->mostrarTableroParaJugador(jugadores->getCursor(),nombreJugador);
 
 		fichas->reiniciarCursor();
 		while(fichas->avanzarCursor()){
@@ -79,7 +86,7 @@ void Menu::aniadirSoldadosEnTablero(Tablero* tablero, Lista<Jugador*>* jugadores
 			cout<<"	Jugador "<<jugadores->getCursor()->getSimbolo()<<" || "<<"Soldado N°: "<<contadorSoldado<<endl;
 
 			this->juego->colocarFicha(soldado,this->validarCasilla("S","A"));
-			this->juego->mostrarTableroParaJugador(nombreJugador);
+			this->juego->mostrarTableroParaJugador(jugadores->getCursor(),nombreJugador);
 			contadorSoldado++;
 		}
 
@@ -119,11 +126,14 @@ Coordenada* Menu::validarCasilla(string simboloAComparar,string simbolo){
 		}
 
 		Casillero* casillero = this->juego->getTablero()->getTablero()->get(posicionZ)->get(posicionY)->get(posicionX);
-
+		cout<<"Simbolo A comparar: "<<simboloAComparar<<"Estado: "<<casillero->getEstado()<<"Terreno: "<<casillero->getTipoTerreno()<<endl;
 		if(simboloAComparar == "S" && casillero->getEstado() == libre && casillero->getTipoTerreno() == tierra ){
 			valido = true;
 			coordenadaValida = casillero->getCoordenada();
 		}else if(simboloAComparar == "B" && casillero->getEstado() == libre && casillero->getTipoTerreno() == agua ){
+			valido = true;
+			coordenadaValida = casillero->getCoordenada();
+		}else if(simboloAComparar == "+" && casillero->getEstado() == libre && casillero->getTipoTerreno() == aire ){
 			valido = true;
 			coordenadaValida = casillero->getCoordenada();
 		}else{
@@ -181,25 +191,33 @@ void Menu::iniciarPartida(){
 		while(this->juego->getJugadores()->avanzarCursor()){
 
 			Jugador* jugador = this->juego->getJugadores()->getCursor();
-			if(this->juego->tieneSoldados(jugador) == true){
-
+			if(this->juego->tieneSoldados(jugador) == true && this->saltarTurno == false){
+				this->juego->detectarMinasCOnAvionRadarAlIncioDeTurno(jugador);
 				cout<<"El jugador: "<<jugador->getSimbolo()<<" tomo una carta "<<endl;
 				this->juego->tomarCarta(jugador);
-				this->juego->mostrarTableroParaJugador(jugador->getSimbolo());
+				this->juego->mostrarTableroParaJugador(jugador,jugador->getSimbolo());
 				this->aniadirMinaEnTablero(jugador);
-				this->juego->mostrarTableroParaJugador(jugador->getSimbolo());
+				this->juego->mostrarTableroParaJugador(jugador,jugador->getSimbolo());
 				this->jugarTurno(jugador);
-				this->juego->mostrarTableroParaJugador(jugador->getSimbolo());
-				this->SeleccionarCartaAJugar(jugador);
-				this->juego->mostrarTableroParaJugador(jugador->getSimbolo());
+				this->juego->mostrarTableroParaJugador(jugador,jugador->getSimbolo());
+
 				this->disparaConBarcosDisponibles(jugador);
-				this->juego->mostrarTableroParaJugador(jugador->getSimbolo());
+				this->juego->mostrarTableroParaJugador(jugador,jugador->getSimbolo());
 
+				this->SeleccionarCartaAJugar(jugador);
+				this->juego->mostrarTableroParaJugador(jugador,jugador->getSimbolo());
+
+			}else{
+				//cout<<" CAMBIAR A VERDADERO "<<endl;
+				this->saltarTurno = false;
 			}
+			//cout<<" QUE PASA "<<endl;
 		}
-
-		this->estado = this->revisarEstadoDeJuego();
-
+		//cout<<" - A - "<<endl;
+		if(this->saltarTurno == false){
+			this->estado = this->revisarEstadoDeJuego();
+		}
+		//cout<<" - B - "<<endl;
 	}while(this->estado == enJuego);
 
 	if(this->estado == empate){
@@ -402,6 +420,30 @@ void Menu::aniadirMinaEnTablero(Jugador* jugador){
 
 void Menu::SeleccionarCartaAJugar(Jugador* jugador){
 
+	Lista<Carta*>* cartas = jugador->getCartas();
+	cartas->reiniciarCursor();
+	cout<<"Cantidad de cartas del jugador: "<<cartas->contarElementos()<<endl;
+	int indice = 1;
+	while(cartas->avanzarCursor()){
+		Carta* carta = cartas->getCursor();
+		if(carta->getTipoCarta() == cartaDeBarco){
+			cout<<indice<<" - Barco "<<endl;
+		}
+		if(carta->getTipoCarta() == CartaAtaqueQuimico){
+			cout<<indice<<" - Ataque quimico "<<endl;
+		}
+		if(carta->getTipoCarta() == cartaDeAvionRadar){
+			cout<<indice<<" - Avion radar "<<endl;
+		}
+		if(carta->getTipoCarta() == cartaSaltarTurno){
+			cout<<indice<<" - Saltar turno del siguiente Jugador "<<endl;
+		}
+		if(carta->getTipoCarta() == cartaAntiAereo){
+			cout<<indice<<" - Antiaereo "<<endl;
+		}
+		indice++;
+	}
+
 	int opcion;
 	cout<<endl;
 	cout<<"Turno jugador N°: "<<jugador->getSimbolo()<<endl;
@@ -411,41 +453,43 @@ void Menu::SeleccionarCartaAJugar(Jugador* jugador){
 	opcion = this->validarPosicion(0,2,"Ingrese la opcion: ");
 
 	if(opcion == 1){
-		Lista<Carta*>* cartas = jugador->getCartas();
-		cartas->reiniciarCursor();
-		int indice = 1;
-		while(cartas->avanzarCursor()){
-			Carta* carta = cartas->getCursor();
-			if(carta->getTipoCarta() == cartaDeBarco){
-				cout<<indice<<" - Barco "<<endl;
-			}
-			if(carta->getTipoCarta() == CartaAtaqueQuimico){
-				cout<<indice<<" - Ataque quimico "<<endl;
-			}
-			if(carta->getTipoCarta() == cartaDeAvionRadar){
-				cout<<indice<<" - Avion radar "<<endl;
-			}
-			indice++;
-		}
+
 		int numeroDeCarta;
 		numeroDeCarta = this->validarPosicion(0,cartas->contarElementos(),"Ingrese numero de carta a jugar: ");
 		Carta* cartaAJugar = cartas->get(numeroDeCarta);
 
-		cout<<"Ingrese la Pocion dende va ajugar la carta"<<endl;
+		//cout<<"Ingrese la Pocion dende va a jugar la carta"<<endl;
 		Coordenada* posicion ;
-		Ficha* ficha;
+		Ficha* ficha = NULL;
 		if(cartaAJugar->getTipoCarta() == cartaDeBarco){
 			ficha = new Ficha(barco,jugador->getSimbolo());
 			jugador->getFichasDisponibles()->add(ficha);
 		}else if(cartaAJugar->getTipoCarta() == cartaDeAvionRadar){
 			ficha = new Ficha(avionRadar,jugador->getSimbolo());
 			jugador->getFichasDisponibles()->add(ficha);
-		}else if(cartaAJugar->getTipoCarta() == CartaAtaqueQuimico){
+		}else if(cartaAJugar->getTipoCarta() == cartaSaltarTurno){
+			this->saltarTurno = true;
+		}else if(cartaAJugar->getTipoCarta() == cartaAntiAereo){
+			int poscion = this->validarPosicion(0, this->juego->getJugadores()->contarElementos(), "Ingrese el numero de Jugador: ")
+			this->juego->usarAntiaereo(poscion);
+		}else if(cartaAJugar->getTipoCarta() == cartaAntiAereo){
+
+		}
+		//cout<<"Simbolo Ficha: "<<ficha->getSimbolo()<<" || Limite Z: "<<this->juego->getTablero()->getLimiteZ()<<endl;
+
+		if(ficha != NULL){
+			posicion = this->validarCasilla(ficha->getSimbolo(),ficha->getNombreJugador());
+			this->juego->colocarFicha(ficha, posicion);
 		}
 
-		posicion = this->validarCasilla(ficha->getSimbolo(),ficha->getNombreJugador());
 
-		this->juego->colocarFicha(ficha, posicion);
+		if(ficha != NULL && ficha->getTipoFicha() == avionRadar){
+			this->juego->detectarMinasConAvionRadar(jugador, posicion);
+
+			this->verListaDeMinasDetectadas(jugador);
+
+
+		}
 
 		cartas->remover(numeroDeCarta);
 

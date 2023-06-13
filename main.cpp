@@ -7,7 +7,7 @@
 #include"BatallaDigital.h"
 #include<string>
 #include"Carta.h"
-#include"Pila.h"
+//#include"Pila.h"
 #include"Menu.h"
 using namespace std;
 int main(){

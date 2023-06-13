@@ -1,9 +1,3 @@
-/*
- * Jugador.cpp
- *
- *  Created on: 22 may 2023
- *      Author: David
- */
 using namespace std;
 #include"Jugador.h"
 
@@ -12,6 +6,7 @@ Jugador::Jugador(int solodadoDisponibles, string simbolo){
 	this->simbolo = simbolo;
 	this->numeroSoldadosDisponibles = solodadoDisponibles;
 	this->FichasDisponibles = new Lista<Ficha*>();
+	this->posicionDeMinasDetectadasPorRadar = new Lista<Coordenada*>();
 }
 
 Lista<Carta*>* Jugador::getCartas(){
@@ -29,3 +24,8 @@ int Jugador::getSoldadosDisponibles(){
 Lista<Ficha*>* Jugador::getFichasDisponibles(){
 	return this->FichasDisponibles;
 }
+
+Lista<Coordenada*>* Jugador::getPosicionDeMinasDetectadasPorRadar(){
+	return this->posicionDeMinasDetectadasPorRadar;
+}
+

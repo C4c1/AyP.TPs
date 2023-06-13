@@ -10,19 +10,16 @@ using namespace std;
 BatallaDigital::BatallaDigital(){
 
 	this->tablero = new Tablero(1,1,1);
-	this->cantidadJugadores = 0;
-	this->cantidadSoldados = 2;
 	this->jugadores = new Lista<Jugador*>();
+    this->cantidadSoldados = 1;
 
 }
 
 BatallaDigital::BatallaDigital(int limiteX,int limiteY,int limiteZ,int cantidadJugadores,int cantidadSoldados){
 
 	this->tablero = new Tablero(limiteX,limiteY,limiteZ);
-	this->cantidadJugadores = cantidadJugadores;
-	this->cantidadSoldados = cantidadSoldados;
 	this->jugadores = new Lista<Jugador*>();
-
+    this->cantidadSoldados = cantidadSoldados;
 
 }
 
@@ -63,7 +60,7 @@ void BatallaDigital::mostrarTablero(){
 
 }
 
-void BatallaDigital::mostrarTableroParaJugador(std::string nombre){
+void BatallaDigital::mostrarTableroParaJugador(Jugador* jugador,std::string nombre){
 
 	this->tablero->getTablero()->reiniciarCursor();
 	int numeroCapa  = 1;
@@ -85,6 +82,10 @@ void BatallaDigital::mostrarTableroParaJugador(std::string nombre){
 
 					if(casillero->getFicha()->getNombreJugador() == nombre){
 						string simbolo = casillero->getFicha()->getSimbolo();
+						cout<<" "<<simbolo;
+					}else if(casillero->getFicha()->getNombreJugador() != nombre && casillero->getFicha()->getTipoFicha() == mina &&
+							this->estaEnLaListaDeMinasDetectadas(jugador, casillero->getCoordenada())){
+						string simbolo = "E";
 						cout<<" "<<simbolo;
 					}else{
 						string simbolo = casillero->getSimbolo();
@@ -138,6 +139,9 @@ void BatallaDigital::cargarMapa(){
 						casilla->setSimbolo("T");
 						casilla->setTerrono(tierra);
 					}
+				}else{
+					casilla->setSimbolo("*");
+					casilla->setTerrono(aire);
 				}
 			}
 		}
@@ -193,9 +197,9 @@ bool BatallaDigital::colocarFicha(Ficha* ficha, Coordenada* coordenada){
 
 }
 
-int BatallaDigital::getCantidadJugadores(){
+/*int BatallaDigital::getCantidadJugadores(){
 	return this->cantidadJugadores;
-}
+}*/
 
 void BatallaDigital::aniadirSoldadosAJugador(int cantidad){
 
@@ -373,7 +377,8 @@ Jugador* BatallaDigital::buscarGanador(){
 
 void BatallaDigital::tomarCarta(Jugador* jugador){
 
-	int numeroRandom = 1; //1 + rand() % 3;
+	//int numeroRandom = 1 + rand() % 3;
+	int numeroRandom = 6;
 
 	if(numeroRandom == 1){
 		Carta* carta = new Carta(cartaDeBarco);
@@ -381,8 +386,17 @@ void BatallaDigital::tomarCarta(Jugador* jugador){
 	}else if(numeroRandom == 2){
 		Carta* carta = new Carta(CartaAtaqueQuimico);
 		jugador->getCartas()->add(carta);
-	}else{
+	}else if(numeroRandom == 3){
 		Carta* carta = new Carta(cartaDeAvionRadar);
+		jugador->getCartas()->add(carta);
+	}else if(numeroRandom == 4){
+		Carta* carta = new Carta(cartaSaltarTurno);
+		jugador->getCartas()->add(carta);
+	}else if(numeroRandom == 5){
+		Carta* carta = new Carta(cartaAntiAereo);
+		jugador->getCartas()->add(carta);
+	}else if(numeroRandom == 6){
+		Carta* carta = new Carta(cartaKamikaze);
 		jugador->getCartas()->add(carta);
 	}
 
@@ -397,28 +411,253 @@ void BatallaDigital::dispararConBarcoA(Casillero* casillero){
 			casillero->setFicha(NULL);
 			casillero->setEstado(bloqueado);
 
-		}else{
+		}else if(casillero->getFicha()->getTipoFicha() == avionRadar){
+			stringstream convertiAEntero;
+			int numeroJugador;
+
+			convertiAEntero<<casillero->getFicha()->getNombreJugador();
+			convertiAEntero>>numeroJugador;
+
+			this->eliminarMinasDetectadas(this->jugadores->get(numeroJugador), casillero->getCoordenada());
 			this->removerFichaDeLista(casillero->getFicha()->getCoordenada(),this->buscarDuenioDeFicha(casillero->getFicha()->getNombreJugador()));
 			casillero->setFicha(NULL);
 			casillero->setEstado(libre);
-		}
+
+		}else{
+					this->removerFichaDeLista(casillero->getFicha()->getCoordenada(),this->buscarDuenioDeFicha(casillero->getFicha()->getNombreJugador()));
+					casillero->setFicha(NULL);
+					casillero->setEstado(libre);
+				}
 
 	}
 }
 
+void BatallaDigital::detectarMinasConAvionRadar(Jugador* jugador, Coordenada* posicionDelAvionRadar){
+
+	Lista<Coordenada*>* posicionesDeMInasEnemigas = jugador->getPosicionDeMinasDetectadasPorRadar();
+	int centroX = posicionDelAvionRadar->getPosicionX();
+	int centroY = posicionDelAvionRadar->getPosicionY();
+	int centroZ = posicionDelAvionRadar->getPosicionZ();
+	int inicioX ;
+	int inicioY ;
+	int inicioZ = 1;
+	int finalX ;
+	int finalY ;
+	int finalZ = 5;
+
+
+	inicioX = this->validarNumero(centroX,1,this->getTablero()->getLimiteX(),1);
+	inicioY = this->validarNumero(centroY,1,this->getTablero()->getLimiteY(),1);;
+
+	finalX = this->validarNumero(centroX,1,this->getTablero()->getLimiteX(),0);
+	finalY = this->validarNumero(centroY,1,this->getTablero()->getLimiteY(),0);
 
 
 
+	for(int z = inicioZ ; z <= finalZ ; z++){
+		for(int y = inicioY ; y <= finalY ; y++){
+			for(int x = inicioX ; x <= finalX ; x++){
+				Casillero* casillero = this->buscarCasillero(x, y, z);
+
+				if(casillero->getFicha() != NULL &&
+						casillero->getFicha()->getTipoFicha() == mina &&
+						casillero->getFicha()->getNombreJugador() != jugador->getSimbolo()){
+
+					Coordenada* posicionDeMInaEnemiga = new Coordenada(x,y,z);
+					posicionesDeMInasEnemigas->add(posicionDeMInaEnemiga);
+
+				}
+
+			}
+		}
+	}
+
+
+}
+
+void BatallaDigital::detectarMinasCOnAvionRadarAlIncioDeTurno(Jugador* jugador){
+
+	jugador->getFichasDisponibles()->reiniciarCursor();
+
+	while(jugador->getFichasDisponibles()->avanzarCursor()){
+		Ficha* ficha = jugador->getFichasDisponibles()->getCursor();
+		if(ficha->getTipoFicha() == avionRadar){
+
+			Coordenada* posicionDelAvionRadar = ficha->getCoordenada();
+
+			Lista<Coordenada*>* posicionesDeMInasEnemigas = jugador->getPosicionDeMinasDetectadasPorRadar();
+			int centroX = posicionDelAvionRadar->getPosicionX();
+			int centroY = posicionDelAvionRadar->getPosicionY();
+			int centroZ = posicionDelAvionRadar->getPosicionZ();
+			int inicioX ;
+			int inicioY ;
+			int inicioZ = 1;
+			int finalX ;
+			int finalY ;
+			int finalZ = 5;
+
+
+			inicioX = this->validarNumero(centroX,1,this->getTablero()->getLimiteX(),1);
+			inicioY = this->validarNumero(centroY,1,this->getTablero()->getLimiteY(),1);;
+
+			finalX = this->validarNumero(centroX,1,this->getTablero()->getLimiteX(),0);
+			finalY = this->validarNumero(centroY,1,this->getTablero()->getLimiteY(),0);
 
 
 
+			for(int z = inicioZ ; z <= finalZ ; z++){
+				for(int y = inicioY ; y <= finalY ; y++){
+					for(int x = inicioX ; x <= finalX ; x++){
+						Casillero* casillero = this->buscarCasillero(x, y, z);
+
+						if(casillero->getFicha() != NULL &&
+								casillero->getFicha()->getTipoFicha() == mina &&
+								casillero->getFicha()->getNombreJugador() != jugador->getSimbolo() &&
+								this->estaEnLaListaDeMinasDetectadas(jugador, casillero->getCoordenada()) == false){
+
+							Coordenada* posicionDeMInaEnemiga = new Coordenada(x,y,z);
+							posicionesDeMInasEnemigas->add(posicionDeMInaEnemiga);
+
+						}
+
+					}
+				}
+			}
+
+
+		}
+	}
+}
+
+
+int BatallaDigital::validarNumero(int numero, int minimo, int maximo, int opcion){
+	if(opcion == 1){
+		if(numero > minimo){
+			return numero - 1;
+		}else{
+			return numero;
+		}
+	}
+
+	if(opcion == 0){
+		if(numero < maximo){
+			return numero + 1;
+		}else{
+			return numero;
+		}
+	}
+
+	return -1;
+}
+
+
+bool BatallaDigital::estaEnLaListaDeMinasDetectadas(Jugador* jugador,Coordenada* aBuscar){
+
+	jugador->getPosicionDeMinasDetectadasPorRadar()->reiniciarCursor();
+
+	while(jugador->getPosicionDeMinasDetectadasPorRadar()->avanzarCursor()){
+		if(jugador->getPosicionDeMinasDetectadasPorRadar()->getCursor()->compararCoordenadas(aBuscar)){
+			return true;
+		}
+	}
+
+	return false;
+
+}
+
+void BatallaDigital::eliminarMinasDetectadas(Jugador* jugador,  Coordenada* posicionDelAvionRadar){
+
+	Lista<Coordenada*>* posicionesDeMInasEnemigas = jugador->getPosicionDeMinasDetectadasPorRadar();
+	Lista<int>* posiciones = new Lista<int>();
+	int contador = 1;
+	int centroX = posicionDelAvionRadar->getPosicionX();
+	int centroY = posicionDelAvionRadar->getPosicionY();
+	int centroZ = posicionDelAvionRadar->getPosicionZ();
+	int inicioX ;
+	int inicioY ;
+	int inicioZ = 1;
+	int finalX ;
+	int finalY ;
+	int finalZ = 5;
+
+
+	inicioX = this->validarNumero(centroX,1,this->getTablero()->getLimiteX(),1);
+	inicioY = this->validarNumero(centroY,1,this->getTablero()->getLimiteY(),1);;
+
+	finalX = this->validarNumero(centroX,1,this->getTablero()->getLimiteX(),0);
+	finalY = this->validarNumero(centroY,1,this->getTablero()->getLimiteY(),0);
 
 
 
+	for(int z = inicioZ ; z <= finalZ ; z++){
+		for(int y = inicioY ; y <= finalY ; y++){
+			for(int x = inicioX ; x <= finalX ; x++){
+				Casillero* casillero = this->buscarCasillero(x, y, z);
+				bool encontrado = false;
+				int contarPosiciones = 1;
+				int posicionABorrar = 0;
+				Lista<Coordenada*>* lista = jugador->getPosicionDeMinasDetectadasPorRadar();
+
+				lista->reiniciarCursor();
+				while(lista->avanzarCursor() && encontrado == false){
+
+					Coordenada* posicion = lista->getCursor();
+
+					if(posicion->compararCoordenadas(casillero->getCoordenada())){
+						posicionABorrar = contarPosiciones;
+						encontrado = true;
+					}
+					contarPosiciones++;
+
+				}
+
+				int tamanioLista = lista->contarElementos();
+
+				if(posicionABorrar >= 1 && posicionABorrar <= tamanioLista){
+					lista->remover(posicionABorrar);
+				}
+
+			}
+		}
+	}
+
+}
+
+void BatallaDigital::usarAntiaereo(int numeroDeJugador){
+
+	stringstream convertirAString;
+	string nombreJugador;
+	convertirAString<<numeroDeJugador;
+	convertirAString>>nombreJugador;
+
+	Lista<Ficha*>* fichas = this->jugadores->get(numeroDeJugador)->getFichasDisponibles();
+	Lista<Coordenada*>* posiciones = this->jugadores->get(numeroDeJugador)->getPosicionDeMinasDetectadasPorRadar();
+
+	int cantidadFichas = fichas->contarElementos();
+
+	for(int i = cantidadFichas; i > 0; i--){
+		if(fichas->get(i)->getTipoFicha() == avionRadar){
+			Coordenada* poscion = fichas->get(i)->getCoordenada();
+			this->buscarCasillero(poscion)->setFicha(NULL);
+			this->buscarCasillero(poscion)->setEstado(libre);
+			fichas->remover(i);
+		}
+
+	}
+
+	int cantidadPosiciones = posiciones->contarElementos();
+
+	for(int i = cantidadPosiciones; i > 0; i--){
+		posiciones->remover(i);
+	}
+
+}
+
+void BatallaDigital::usarKamikaze(int numeroJUgador, Jugador* jugadorActual){
 
 
 
-
+}
 
 
 
