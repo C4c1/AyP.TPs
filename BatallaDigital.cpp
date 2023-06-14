@@ -11,7 +11,7 @@ BatallaDigital::BatallaDigital(){
 
 	this->tablero = new Tablero(1,1,1);
 	this->jugadores = new Lista<Jugador*>();
-    this->cantidadSoldados = 1;
+    this->cantidadSoldados = 0;
 
 }
 
@@ -252,7 +252,7 @@ bool BatallaDigital::moverFicha(Casillero* actual, Casillero* destino, Ficha* aM
 		destino->setFicha(NULL);
 		actual->setEstado(libre);
 		destino->setEstado(bloqueado);
-
+		destino->setTurnosBloqueado(2);
 	}
 	return true;
 }
@@ -347,6 +347,7 @@ bool BatallaDigital::colocarMina(Jugador* jugador,Coordenada* posicion){
 			this->removerFichaDeLista(casillero->getCoordenada(),this->buscarDuenioDeFicha(casillero->getFicha()->getNombreJugador()));
 			casillero->setEstado(bloqueado);
 			casillero->setFicha(NULL);
+			casillero->setTurnosBloqueado(3);
 			seMino = true;
 
 		}
@@ -377,8 +378,8 @@ Jugador* BatallaDigital::buscarGanador(){
 
 void BatallaDigital::tomarCarta(Jugador* jugador){
 
-	//int numeroRandom = 1 + rand() % 3;
-	int numeroRandom = 6;
+	int numeroRandom = 1 + rand() % 6;
+	//int numeroRandom = 2;
 
 	if(numeroRandom == 1){
 		Carta* carta = new Carta(cartaDeBarco);
@@ -410,6 +411,7 @@ void BatallaDigital::dispararConBarcoA(Casillero* casillero){
 			this->removerFichaDeLista(casillero->getFicha()->getCoordenada(),this->buscarDuenioDeFicha(casillero->getFicha()->getNombreJugador()));
 			casillero->setFicha(NULL);
 			casillero->setEstado(bloqueado);
+			casillero->setTurnosBloqueado(3);
 
 		}else if(casillero->getFicha()->getTipoFicha() == avionRadar){
 			stringstream convertiAEntero;
@@ -653,13 +655,192 @@ void BatallaDigital::usarAntiaereo(int numeroDeJugador){
 
 }
 
-void BatallaDigital::usarKamikaze(int numeroJUgador, Jugador* jugadorActual){
+bool BatallaDigital::usarKamikaze(Ficha* kamikaze , Jugador* jugadorActual, int jugadorEnemigo){
 
+	Lista<Ficha*>* fichasEnemigas = this->jugadores->get(jugadorEnemigo)->getFichasDisponibles();
+	fichasEnemigas->reiniciarCursor();
+	bool barcoEncontrado = false;
+	Ficha* barcoEnemigo = NULL;
+	while(fichasEnemigas->avanzarCursor() && barcoEncontrado == false ){
+		if(fichasEnemigas->getCursor()->getTipoFicha() == barco){
+			barcoEnemigo = fichasEnemigas->getCursor();
+			barcoEncontrado = true;
+		}
+	}
 
+	if(barcoEnemigo != NULL){
+		Casillero* delBarco = this->buscarCasillero(barcoEnemigo->getCoordenada());
+		this->removerFichaDeLista(barcoEnemigo->getCoordenada(),this->jugadores->get(jugadorEnemigo)->getFichasDisponibles());
+		delBarco->setEstado(libre);
+		delBarco->setFicha(NULL);
+
+		Casillero* delAvion = this->buscarCasillero(kamikaze->getCoordenada());
+		this->removerFichaDeLista(kamikaze->getCoordenada(),jugadorActual->getFichasDisponibles());
+		delAvion->setEstado(libre);
+		delAvion->setFicha(NULL);
+		return true;
+	}else{
+		return false;
+	}
 
 }
 
+bool BatallaDigital::usarAtaqueQuimico(Coordenada* posicion){
+
+
+	int centroX = posicion->getPosicionX();
+	int centroY = posicion->getPosicionY();
+	int centroZ = posicion->getPosicionZ();
+	int inicioX ;
+	int inicioY ;
+	int inicioZ ;
+	int finalX ;
+	int finalY ;
+	int finalZ ;
+
+
+	inicioX = this->validarRangoAtaqueQuimico(centroX,1,this->getTablero()->getLimiteX(),1);
+	inicioY = this->validarRangoAtaqueQuimico(centroY,1,this->getTablero()->getLimiteY(),1);
+	inicioZ = this->validarRangoAtaqueQuimico(centroZ,1,this->getTablero()->getLimiteZ(),1);
+
+	finalX = this->validarRangoAtaqueQuimico(centroX,1,this->getTablero()->getLimiteX(),0);
+	finalY = this->validarRangoAtaqueQuimico(centroY,1,this->getTablero()->getLimiteY(),0);
+	finalZ = this->validarRangoAtaqueQuimico(centroZ,1,this->getTablero()->getLimiteZ(),0);
 
 
 
+	for(int z = inicioZ ; z <= finalZ ; z++){
+		for(int y = inicioY ; y <= finalY ; y++){
+			for(int x = inicioX ; x <= finalX ; x++){
+				Casillero* casillero = this->buscarCasillero(x, y, z);
 
+				if(centroY-y == 2 || centroY-y == -2 || centroX-x == 2 || centroX-x == -2 || centroZ-z == 2 || centroZ-z == -2){
+
+					if(casillero->getEstado() == bloqueado && casillero->getTurnosBloqueado() > 2){
+						casillero->setEstado(bloqueado);
+						//casillero->setTurnosBloqueado(2);
+					}else{
+						casillero->setEstado(bloqueado);
+						casillero->setTurnosBloqueado(2);
+					}
+
+
+				}else if(centroY-y == 1 || centroY-y == -1 || centroX-x == 1 || centroX-x == -1 || centroZ-z == 1 || centroZ-z == -1){
+
+					if(casillero->getEstado() == bloqueado && casillero->getTurnosBloqueado() > 4){
+						casillero->setEstado(bloqueado);
+						//casillero->setTurnosBloqueado(4);
+					}else{
+						casillero->setEstado(bloqueado);
+						casillero->setTurnosBloqueado(4);
+					}
+
+				}else if(centroY == y && centroX == x && centroZ == z){
+
+					if(casillero->getEstado() == bloqueado && casillero->getTurnosBloqueado() > 6){
+						casillero->setEstado(bloqueado);
+						//casillero->setTurnosBloqueado(4);
+					}else{
+						casillero->setEstado(bloqueado);
+						casillero->setTurnosBloqueado(6);
+					}
+
+				}else{
+
+					casillero->setEstado(bloqueado);
+					casillero->setTurnosBloqueado(2);
+
+				}
+
+			}
+		}
+	}
+
+	return true;
+}
+
+int BatallaDigital::validarRangoAtaqueQuimico(int numero, int minimo, int maximo, int opcion){
+
+	if(opcion == 1){
+		if(numero-2 > minimo){
+			return numero - 2;
+		}else{
+			return minimo;
+		}
+	}
+
+	if(opcion == 0){
+		if(numero+2 < maximo){
+			return numero + 2;
+		}else{
+			return maximo;
+		}
+	}
+
+	return -1;
+
+}
+
+void BatallaDigital::revisarCasilleroBloqueados(){
+
+	this->tablero->getTablero()->reiniciarCursor();
+	int numeroCapa  = 1;
+	while(this->tablero->getTablero()->avanzarCursor()){
+
+		//cout<<"Capa"<<numeroCapa<<endl;
+		//cout<<endl;
+		this->tablero->getTablero()->getCursor()->reiniciarCursor();
+
+		while(this->tablero->getTablero()->getCursor()->avanzarCursor()){
+
+			this->tablero->getTablero()->getCursor()->getCursor()->reiniciarCursor();
+
+			while(this->tablero->getTablero()->getCursor()->getCursor()->avanzarCursor()){
+				Casillero* casillero = this->tablero->getTablero()->getCursor()->getCursor()->getCursor();
+
+				if(casillero->getEstado() == bloqueado){
+
+					//string simbolo = casillero->getFicha()->getSimbolo();
+					if(casillero->getTurnosBloqueado()-1 > 0){
+						casillero->setTurnosBloqueado(casillero->getTurnosBloqueado()-1);
+					}else{
+						casillero->setTurnosBloqueado(0);
+						if(casillero->getFicha() != NULL && casillero->getFicha()->getTipoFicha() != mina){
+							casillero->setEstado(ocupado);
+						}else{
+							casillero->setEstado(libre);
+						}
+					}
+
+				}
+
+			}
+			//cout<<endl;
+		}
+		numeroCapa++;
+		//cout<<endl;
+	}
+
+}
+
+bool BatallaDigital::todasLasFichasBloqueadasDe(Jugador* jugador){
+
+	bool bloqueadas = true;
+	Lista<Ficha*>* fichas = jugador->getFichasDisponibles();
+
+	fichas->reiniciarCursor();
+	while(fichas->avanzarCursor() && bloqueadas == true){
+		if(fichas->getCursor()->getTipoFicha() == barco || fichas->getCursor()->getTipoFicha() == soldado ){
+			if(this->buscarCasillero(fichas->getCursor()->getCoordenada())->getEstado() != bloqueado){
+				bloqueadas = false;
+			}
+
+
+		}
+	}
+	return bloqueadas;
+}
+
+void BatallaDigital::setCantidadSoldados(int cantidad){
+	this->cantidadSoldados = cantidad;
+}

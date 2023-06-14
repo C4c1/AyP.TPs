@@ -118,7 +118,36 @@ public:
 			cout<<endl;
 		}
 
-	}
+}
+
+	void mostrarTableroTurnosBloqueados(){
+
+		this->tablero->getTablero()->reiniciarCursor();
+		int numeroCapa  = 1;
+		while(this->tablero->getTablero()->avanzarCursor()){
+
+			cout<<"Capa"<<numeroCapa<<endl;
+			cout<<endl;
+			this->tablero->getTablero()->getCursor()->reiniciarCursor();
+
+			while(this->tablero->getTablero()->getCursor()->avanzarCursor()){
+
+				this->tablero->getTablero()->getCursor()->getCursor()->reiniciarCursor();
+
+				while(this->tablero->getTablero()->getCursor()->getCursor()->avanzarCursor()){
+					Casillero* casillero = this->tablero->getTablero()->getCursor()->getCursor()->getCursor();
+
+					int turno = casillero->getTurnosBloqueado();
+					cout<<"("<<turno<<")  ";
+
+				}
+				cout<<endl;
+			}
+			numeroCapa++;
+			cout<<endl;
+		}
+
+}
 
     /* Pre: -- No requiere condiciones especificas
      * Pos: muestra por pantalla los casilleros con su respectivo estado (sea ocupado, libre o bloqueado)
@@ -233,7 +262,17 @@ public:
 
 	void usarAntiaereo(int numeroDeJugador);
 
-	void usarKamikaze(int numeroJUgador, Jugador* jugadorActual);
+	bool usarKamikaze(Ficha* kamikaze , Jugador* jugadorActual, int jugadorEnemigo);
+
+	bool usarAtaqueQuimico(Coordenada* posicion);
+
+	int validarRangoAtaqueQuimico(int numero, int minimo, int maximo, int opcion);
+
+	void revisarCasilleroBloqueados();
+
+	bool todasLasFichasBloqueadasDe(Jugador* jugador);
+
+	void setCantidadSoldados(int cantidad);
 
 };
 

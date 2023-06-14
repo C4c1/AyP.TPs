@@ -61,3 +61,10 @@ Ficha* Casillero::getFicha(){
 	return this->ficha;
 }
 
+void Casillero::setTurnosBloqueado(int numeroTurnos){
+	this->numeroDeturnosBloqueado = numeroTurnos;
+}
+
+int Casillero::getTurnosBloqueado(){
+	return this->numeroDeturnosBloqueado;
+}

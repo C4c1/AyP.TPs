@@ -78,6 +78,10 @@ public:
      */
 	Ficha* getFicha();
 
+	int getTurnosBloqueado();
+
+	void setTurnosBloqueado(int numeroTurnos);
+
 };
 
 

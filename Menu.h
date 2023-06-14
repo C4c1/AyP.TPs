@@ -128,7 +128,9 @@ public:
      */
 	Lista<Ficha*>* buscarFichas(Jugador* jugador, TipoFicha tipo);
 
-	Ficha* SeleccionarAvionRadar(Jugador* jugador);
+	void SeleccionarAvionRadarKamikaze(Jugador* jugador);
+
+	void ingresarEpicentroAtaqueQuimico(Jugador* jugador);
 
 	void verListaDeMinasDetectadas(Jugador* jugador){
 
@@ -142,8 +144,9 @@ public:
 
 	}
 
+	void ingresarTamanioDeTablero();
 
-
+	void ingreseCantidadDeSoldados();
 };
 
 
