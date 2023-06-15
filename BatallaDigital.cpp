@@ -28,13 +28,18 @@ void BatallaDigital::mostrarTablero(){
 	this->tablero->getTablero()->reiniciarCursor();
 	int numeroCapa  = 1;
 	while(this->tablero->getTablero()->avanzarCursor()){
-
-		cout<<"Capa"<<numeroCapa<<endl;
+		cout<<endl;cout<<endl;
+		cout<<"     Capa"<<numeroCapa<<endl;
 		cout<<endl;
 		this->tablero->getTablero()->getCursor()->reiniciarCursor();
+		int indiceY = 1;
 
 		while(this->tablero->getTablero()->getCursor()->avanzarCursor()){
-
+			if(indiceY < 10){
+				cout<<" "<<indiceY<<"  ";
+			}else{
+				cout<<" "<<indiceY<<" ";
+			}
 			this->tablero->getTablero()->getCursor()->getCursor()->reiniciarCursor();
 
 			while(this->tablero->getTablero()->getCursor()->getCursor()->avanzarCursor()){
@@ -42,19 +47,35 @@ void BatallaDigital::mostrarTablero(){
 				if(casillero->getFicha() != NULL){
 
 					string simbolo = casillero->getFicha()->getSimbolo();
-					cout<<" "<<simbolo;
+					cout<<" "<<simbolo<<" ";
 
 				}else{
 
 					string simbolo = this->tablero->getTablero()->getCursor()->getCursor()->getCursor()->getSimbolo();
-					cout<<" "<<simbolo;
+					cout<<" "<<simbolo<<" ";
 
 				}
 
 			}
+			indiceY++;
 			cout<<endl;
 		}
 		numeroCapa++;
+		cout<<endl;
+		if(indiceY < 10){
+			cout<<"    ";
+		}else{
+			cout<<"     ";
+		}
+		for(int i = 1 ; i <= this->getTablero()->getLimiteX() ; i++){
+
+			if(i < 10){
+				cout<<i<<"  ";
+			}else{
+				cout<<i<<" ";
+			}
+		}
+		cout<<endl;
 		cout<<endl;
 	}
 
@@ -70,41 +91,65 @@ void BatallaDigital::mostrarTableroParaJugador(Jugador* jugador,std::string nomb
 
 
 	while(this->tablero->getTablero()->avanzarCursor()){
-
-		cout<<"Capa"<<numeroCapa<<endl;
+		cout<<endl;
+		cout<<"     Capa"<<numeroCapa<<endl;
 		cout<<endl;
 		this->tablero->getTablero()->getCursor()->reiniciarCursor();
+		int indiceY = 1;
 		while(this->tablero->getTablero()->getCursor()->avanzarCursor()){
+
 			this->tablero->getTablero()->getCursor()->getCursor()->reiniciarCursor();
+			if(indiceY < 10){
+				cout<<" "<<indiceY<<"  ";
+			}else{
+				cout<<" "<<indiceY<<" ";
+			}
 			while(this->tablero->getTablero()->getCursor()->getCursor()->avanzarCursor()){
 				Casillero* casillero = this->tablero->getTablero()->getCursor()->getCursor()->getCursor();
 				if(casillero->getFicha() != NULL){
 
 					if(casillero->getFicha()->getNombreJugador() == nombre){
 						string simbolo = casillero->getFicha()->getSimbolo();
-						cout<<" "<<simbolo;
+						cout<<" "<<simbolo<<" ";
 					}else if(casillero->getFicha()->getNombreJugador() != nombre && casillero->getFicha()->getTipoFicha() == mina &&
 							this->estaEnLaListaDeMinasDetectadas(jugador, casillero->getCoordenada())){
 						string simbolo = "E";
-						cout<<" "<<simbolo;
+						cout<<" "<<simbolo<<" ";
 					}else{
 						string simbolo = casillero->getSimbolo();
-						cout<<" "<<simbolo;
+						cout<<" "<<simbolo<<" ";
 					}
 
 
 				}else{
 					string simbolo1 = casillero->getSimbolo();
-					cout<<" "<<simbolo1;
+					cout<<" "<<simbolo1<<" ";
 
 				}
 
 			}
+			indiceY++;
 			cout<<endl;
 		}
 		numeroCapa++;
 		cout<<endl;
+		if(indiceY < 10){
+			cout<<"    ";
+		}else{
+			cout<<"     ";
+		}
+		for(int i = 1 ; i <= this->getTablero()->getLimiteX() ; i++){
+
+			if(i < 10){
+				cout<<i<<"  ";
+			}else{
+				cout<<i<<" ";
+			}
+		}
+		cout<<endl;
+		cout<<endl;
 	}
+
 
 
 
