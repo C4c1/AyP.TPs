@@ -34,6 +34,8 @@ public:
      */
 	void setTipoCarta(TipoCarta nuevoTipo);
 
+	~Carta();
+
 };
 
 

@@ -42,3 +42,8 @@ string Ficha::getNombreJugador(){
 	return this->nombreJugador;
 }
 
+Ficha::~Ficha(){
+
+	//delete this->coordenadas;
+}
+

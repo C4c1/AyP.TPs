@@ -62,6 +62,8 @@ public:
 
 	bool compararCoordenadas(Coordenada* aComparar);
 
+	//~Coordenada();
+
 };
 
 #endif /* COORDENADA_H_ */

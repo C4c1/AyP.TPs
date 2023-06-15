@@ -81,4 +81,8 @@ bool Coordenada::compararCoordenadas(Coordenada* aComparar){
 	}
 
 }
+/*
+Coordenada::~Coordenada(){
 
+}
+*/

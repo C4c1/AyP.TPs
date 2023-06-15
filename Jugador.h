@@ -51,6 +51,7 @@ public:
 
 	Lista<Coordenada*>* getPosicionDeMinasDetectadasPorRadar();
 
+	~Jugador();
 
 };
 

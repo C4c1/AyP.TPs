@@ -68,3 +68,7 @@ void Casillero::setTurnosBloqueado(int numeroTurnos){
 int Casillero::getTurnosBloqueado(){
 	return this->numeroDeturnosBloqueado;
 }
+
+Casillero::~Casillero(){
+	delete this->coordenada;
+}

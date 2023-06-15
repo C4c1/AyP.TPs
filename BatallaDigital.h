@@ -84,6 +84,7 @@ public:
     /* Pre: -- No requiere condiciones especificas.
      * Pos: muestra por pantalla el tablero de forma ordenada y con numeracion de las coordenadas.
      */
+	/*
 	void mostrarTableroConCoordenadas(){
 
 		this->tablero->getTablero()->reiniciarCursor();
@@ -118,8 +119,10 @@ public:
 			cout<<endl;
 		}
 
-}
+	}
+	*/
 
+	/*
 	void mostrarTableroTurnosBloqueados(){
 
 		this->tablero->getTablero()->reiniciarCursor();
@@ -147,11 +150,14 @@ public:
 			cout<<endl;
 		}
 
-}
+	}
+	*/
+
 
     /* Pre: -- No requiere condiciones especificas
      * Pos: muestra por pantalla los casilleros con su respectivo estado (sea ocupado, libre o bloqueado)
      */
+	/*
 	void mostrarTablerocasilleroBloqueados(){
 
 		this->tablero->getTablero()->reiniciarCursor();
@@ -189,7 +195,8 @@ public:
 			cout<<endl;
 		}
 
-}
+	}
+	*/
 
     /* Pre: Requiere ingresar un puntero a un dato coordenada.
      * Pos: Devuelve el puntero al casillero que se encuentra en esa coordenada si es que es una coordenada valida.
@@ -226,7 +233,7 @@ public:
     /* Pre:Requiere ingresar dos punteros, uno a un dato jugador y otro a una posicion
      * Pos: Devuelve true si se logra cologar la mina del jugador correspondiente en la posicion indicada
      */
-	bool colocarMina(Jugador* jugador,Coordenada* posicion);
+	bool colocarMina(Jugador* jugador,int x,int y,int z);
 
     /* Pre: -- No requiere condiciones especificas
      * Pos: Devuelve el puntero al jugador cuyos soldados siguen vivos a diferencia del resto. Devuelve un puntero a null
@@ -264,7 +271,7 @@ public:
 
 	bool usarKamikaze(Ficha* kamikaze , Jugador* jugadorActual, int jugadorEnemigo);
 
-	bool usarAtaqueQuimico(Coordenada* posicion);
+	bool usarAtaqueQuimico(int x, int y, int z);
 
 	int validarRangoAtaqueQuimico(int numero, int minimo, int maximo, int opcion);
 
@@ -273,6 +280,9 @@ public:
 	bool todasLasFichasBloqueadasDe(Jugador* jugador);
 
 	void setCantidadSoldados(int cantidad);
+
+	~BatallaDigital();
+
 
 };
 

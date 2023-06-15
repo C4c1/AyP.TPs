@@ -132,6 +132,7 @@ public:
 
 	void ingresarEpicentroAtaqueQuimico(Jugador* jugador);
 
+	/*
 	void verListaDeMinasDetectadas(Jugador* jugador){
 
 		jugador->getPosicionDeMinasDetectadasPorRadar()->reiniciarCursor();
@@ -143,10 +144,14 @@ public:
 		}
 
 	}
+	*/
 
 	void ingresarTamanioDeTablero();
 
 	void ingreseCantidadDeSoldados();
+
+	~Menu();
+
 };
 
 

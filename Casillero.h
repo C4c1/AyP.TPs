@@ -82,6 +82,8 @@ public:
 
 	void setTurnosBloqueado(int numeroTurnos);
 
+	~Casillero();
+
 };
 
 

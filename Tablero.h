@@ -60,6 +60,8 @@ public:
      * Pos: Cambia el atributo limiteZ al nuevo ingresado.
      */
 	void setLimiteZ(int nuevoLimite);
+
+	~Tablero();
 };
 
 
