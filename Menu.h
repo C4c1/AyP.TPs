@@ -1,6 +1,7 @@
 #ifndef MENU_H_
 #define MENU_H_
 #include"BatallaDigital.h"
+#include"Carta.h"
 #include<string>
 #include<iostream>
 #include<cstdlib>
@@ -11,6 +12,7 @@ private:
 
 	BatallaDigital* juego;
 	EstadoDelJUego estado;
+	bool saltarTurno;
 
 public:
 
@@ -61,7 +63,7 @@ public:
     /* Pre: Requiere un puntero a jugador valido (no null)
      * Pos: Realiza el procesamiento de su turno en totalidad (elegir una ficha disponible y moverla de posicion).
      */
-	void jugarTurno(Jugador* jugador);
+	void jugarFicha(Jugador* jugador);
 
     /* Pre: Requiere un puntero a ficha valido (no null y de tipo soldado)
      * Pos: Devuelve el casillero que se seleccionó para mover la ficha ingresada.
@@ -125,6 +127,30 @@ public:
      * Pos: Devuelve una lista con las fichas del tipo ingresado que correspondan al jugador ingresado.
      */
 	Lista<Ficha*>* buscarFichas(Jugador* jugador, TipoFicha tipo);
+
+	void SeleccionarAvionRadarKamikaze(Jugador* jugador);
+
+	void ingresarEpicentroAtaqueQuimico(Jugador* jugador);
+
+	/*
+	void verListaDeMinasDetectadas(Jugador* jugador){
+
+		jugador->getPosicionDeMinasDetectadasPorRadar()->reiniciarCursor();
+
+		while(jugador->getPosicionDeMinasDetectadasPorRadar()->avanzarCursor()){
+			std::string posicion = jugador->getPosicionDeMinasDetectadasPorRadar()->getCursor()->verCoordenada();
+			std::cout<<"MIna: "<<posicion<<std::endl;
+
+		}
+
+	}
+	*/
+
+	void ingresarTamanioDeTablero();
+
+	void ingreseCantidadDeSoldados();
+
+	~Menu();
 
 };
 

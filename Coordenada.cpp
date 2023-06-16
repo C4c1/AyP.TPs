@@ -72,4 +72,17 @@ std::string Coordenada::verCoordenada(){
 	return texto;
 }
 
+bool Coordenada::compararCoordenadas(Coordenada* aComparar){
 
+	if(this->posicionX == aComparar->getPosicionX() && this->posicionY == aComparar->getPosicionY() && this->posicionZ == aComparar->getPosicionZ()){
+		return true;
+	}else{
+		return false;
+	}
+
+}
+/*
+Coordenada::~Coordenada(){
+
+}
+*/

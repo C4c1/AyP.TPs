@@ -10,6 +10,8 @@
 #include"Carta.h"
 #include"Lista.h"
 #include"Ficha.h"
+#include<string>
+
 class Jugador{
 
 private:
@@ -18,6 +20,7 @@ private:
 	int numeroSoldadosDisponibles;
 	std::string simbolo;
 	Lista<Ficha*>* FichasDisponibles;
+	Lista<Coordenada*>* posicionDeMinasDetectadasPorRadar;
 
 public:
 
@@ -46,6 +49,9 @@ public:
      */
 	Lista<Ficha*>* getFichasDisponibles();
 
+	Lista<Coordenada*>* getPosicionDeMinasDetectadasPorRadar();
+
+	~Jugador();
 
 };
 

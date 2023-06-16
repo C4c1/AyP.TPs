@@ -19,3 +19,7 @@ void Carta::setTipoCarta(TipoCarta nuevoTipo){
 	this->tipos = nuevoTipo;
 }
 
+
+Carta::~Carta(){
+
+}

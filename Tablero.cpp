@@ -32,6 +32,7 @@ void Tablero::crearTablero(){
 
 				Casillero* nuevaCasilla = new Casillero(posicionX+1,posicionY+1,posicionZ+1);
 				nivelDos->add(nuevaCasilla);
+				//delete nuevaCasilla;
 
 			}
 
@@ -67,3 +68,26 @@ void Tablero::setLimiteY(int nuevoLimite){
 void Tablero::setLimiteZ(int nuevoLimite){
 	this->limiteZ = nuevoLimite;
 }
+
+Tablero::~Tablero(){
+	Lista<Lista<Lista<Casillero*>*>*>* nivelUno = this->tablero;
+	nivelUno->reiniciarCursor();
+	while(nivelUno->avanzarCursor()){
+		Lista<Lista<Casillero*>*>* nivelDos = nivelUno->getCursor();
+		nivelDos->reiniciarCursor();
+		while(nivelDos->avanzarCursor()){
+
+			Lista<Casillero*>* nivelTres = nivelDos->getCursor();
+
+			nivelTres->reiniciarCursor();
+			while(nivelTres->avanzarCursor()){
+				Casillero* aRemover = nivelTres->getCursor();
+				delete aRemover;
+			}
+			delete nivelTres;
+		}
+		delete nivelDos;
+	}
+	delete nivelUno;
+}
+

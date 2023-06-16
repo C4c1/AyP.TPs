@@ -9,7 +9,7 @@
 #define CARTA_H_
 #include<string>
 
-enum TipoCarta {CartaAtaqueQuimico, cartaDeBarco, cartaDeAvionRadar};
+enum TipoCarta {CartaAtaqueQuimico, cartaDeBarco, cartaDeAvionRadar,cartaSaltarTurno,cartaAntiAereo,cartaKamikaze};
 
 class Carta{
 
@@ -33,6 +33,8 @@ public:
      * Pos: Cambia el tipo de la carta.
      */
 	void setTipoCarta(TipoCarta nuevoTipo);
+
+	~Carta();
 
 };
 

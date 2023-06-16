@@ -2,8 +2,9 @@
 #define BATALLADIGITAL_H_
 #include"Tablero.h"
 #include"Carta.h"
-#include"Pila.h"
+//#include"Pila.h"
 #include"Jugador.h"
+#include<string>
 #include<iostream>
 #include<sstream>
 #include<cstdlib>
@@ -48,7 +49,7 @@ public:
     /* Pre: Requiere pasar un nombre que identifica al jugador del turno en juego
      * Pos:  Muestra por pantalla el tablero del jugador de turno
      */
-	void mostrarTableroParaJugador(std::string nombre);
+	void mostrarTableroParaJugador(Jugador* jugador,std::string nombre);
 
     /* Pre: Requiere ingresar un numero entero que representa la cantidad de jugadores en juego.
      * Pos: Agrega los jugadores que seran parte del juego.
@@ -83,6 +84,7 @@ public:
     /* Pre: -- No requiere condiciones especificas.
      * Pos: muestra por pantalla el tablero de forma ordenada y con numeracion de las coordenadas.
      */
+	/*
 	void mostrarTableroConCoordenadas(){
 
 		this->tablero->getTablero()->reiniciarCursor();
@@ -118,10 +120,44 @@ public:
 		}
 
 	}
+	*/
+
+	/*
+	void mostrarTableroTurnosBloqueados(){
+
+		this->tablero->getTablero()->reiniciarCursor();
+		int numeroCapa  = 1;
+		while(this->tablero->getTablero()->avanzarCursor()){
+
+			cout<<"Capa"<<numeroCapa<<endl;
+			cout<<endl;
+			this->tablero->getTablero()->getCursor()->reiniciarCursor();
+
+			while(this->tablero->getTablero()->getCursor()->avanzarCursor()){
+
+				this->tablero->getTablero()->getCursor()->getCursor()->reiniciarCursor();
+
+				while(this->tablero->getTablero()->getCursor()->getCursor()->avanzarCursor()){
+					Casillero* casillero = this->tablero->getTablero()->getCursor()->getCursor()->getCursor();
+
+					int turno = casillero->getTurnosBloqueado();
+					cout<<"("<<turno<<")  ";
+
+				}
+				cout<<endl;
+			}
+			numeroCapa++;
+			cout<<endl;
+		}
+
+	}
+	*/
+
 
     /* Pre: -- No requiere condiciones especificas
      * Pos: muestra por pantalla los casilleros con su respectivo estado (sea ocupado, libre o bloqueado)
      */
+	/*
 	void mostrarTablerocasilleroBloqueados(){
 
 		this->tablero->getTablero()->reiniciarCursor();
@@ -159,7 +195,8 @@ public:
 			cout<<endl;
 		}
 
-}
+	}
+	*/
 
     /* Pre: Requiere ingresar un puntero a un dato coordenada.
      * Pos: Devuelve el puntero al casillero que se encuentra en esa coordenada si es que es una coordenada valida.
@@ -196,7 +233,7 @@ public:
     /* Pre:Requiere ingresar dos punteros, uno a un dato jugador y otro a una posicion
      * Pos: Devuelve true si se logra cologar la mina del jugador correspondiente en la posicion indicada
      */
-	bool colocarMina(Jugador* jugador,Coordenada* posicion);
+	bool colocarMina(Jugador* jugador,int x,int y,int z);
 
     /* Pre: -- No requiere condiciones especificas
      * Pos: Devuelve el puntero al jugador cuyos soldados siguen vivos a diferencia del resto. Devuelve un puntero a null
@@ -219,6 +256,33 @@ public:
      * el espacio en otro caso de ficha.
      */
 	void dispararConBarcoA(Casillero* casillero);
+
+	void detectarMinasConAvionRadar(Jugador* jugador, Coordenada* posicionDelAvionRadar);
+
+	void detectarMinasCOnAvionRadarAlIncioDeTurno(Jugador* jugador);
+
+	int validarNumero(int numero, int minimo, int maximo, int opcion);
+
+	bool estaEnLaListaDeMinasDetectadas(Jugador* jugador,Coordenada* aBuscar);
+
+	void eliminarMinasDetectadas(Jugador* jugador,  Coordenada* posicionDelAvionRadar);
+
+	void usarAntiaereo(int numeroDeJugador);
+
+	bool usarKamikaze(Ficha* kamikaze , Jugador* jugadorActual, int jugadorEnemigo);
+
+	bool usarAtaqueQuimico(int x, int y, int z);
+
+	int validarRangoAtaqueQuimico(int numero, int minimo, int maximo, int opcion);
+
+	void revisarCasilleroBloqueados();
+
+	bool todasLasFichasBloqueadasDe(Jugador* jugador);
+
+	void setCantidadSoldados(int cantidad);
+
+	~BatallaDigital();
+
 
 };
 

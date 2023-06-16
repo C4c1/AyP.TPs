@@ -6,6 +6,7 @@ Jugador::Jugador(int solodadoDisponibles, string simbolo){
 	this->simbolo = simbolo;
 	this->numeroSoldadosDisponibles = solodadoDisponibles;
 	this->FichasDisponibles = new Lista<Ficha*>();
+	this->posicionDeMinasDetectadasPorRadar = new Lista<Coordenada*>();
 }
 
 Lista<Carta*>* Jugador::getCartas(){
@@ -23,3 +24,32 @@ int Jugador::getSoldadosDisponibles(){
 Lista<Ficha*>* Jugador::getFichasDisponibles(){
 	return this->FichasDisponibles;
 }
+
+Lista<Coordenada*>* Jugador::getPosicionDeMinasDetectadasPorRadar(){
+	return this->posicionDeMinasDetectadasPorRadar;
+}
+
+Jugador::~Jugador(){
+
+	this->cartas->reiniciarCursor();
+	while(this->cartas->avanzarCursor()){
+		Carta* aRemover = this->cartas->getCursor();
+		delete aRemover;
+	}
+	delete this->cartas;
+
+	this->FichasDisponibles->reiniciarCursor();
+	while(this->FichasDisponibles->avanzarCursor()){
+		Ficha* aRemover = this->FichasDisponibles->getCursor();
+		delete aRemover;
+	}
+	delete this->FichasDisponibles;
+
+	this->posicionDeMinasDetectadasPorRadar->reiniciarCursor();
+	while(this->posicionDeMinasDetectadasPorRadar->avanzarCursor()){
+		Coordenada* aRemover = this->posicionDeMinasDetectadasPorRadar->getCursor();
+		delete aRemover;
+	}
+	delete this->posicionDeMinasDetectadasPorRadar;
+}
+
