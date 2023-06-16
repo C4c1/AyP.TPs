@@ -63,7 +63,7 @@ void BatallaDigital::mostrarTablero(){
 		numeroCapa++;
 		cout<<endl;
 		if(indiceY < 10){
-			cout<<"    ";
+			cout<<"     ";
 		}else{
 			cout<<"     ";
 		}
