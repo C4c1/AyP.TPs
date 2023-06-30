@@ -1,10 +1,3 @@
-/*
- * Carta.h
- *
- *  Created on: 22 may 2023
- *      Author: David
- */
-
 #ifndef CARTA_H_
 #define CARTA_H_
 #include<string>
@@ -19,8 +12,9 @@ private:
 
 public:
 
-    /* Pre: Requiere ingresar el tipo de dato entre los disponibles que representara el ataque que realizara la carta
-     * Pos: Crea una instancia de carta con su atributo inicializado
+    /* Pre: Requiere ingresar el tipo de dato entre los disponibles que representara el ataque que realizara la carta.
+     * Pos: Crea una instancia de carta con su atributo inicializado.
+     *
      */
 	Carta(TipoCarta tipo);
 

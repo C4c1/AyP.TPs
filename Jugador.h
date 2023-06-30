@@ -1,10 +1,3 @@
-/*
- * Jugador.h
- *
- *  Created on: 22 may 2023
- *      Author: David
- */
-
 #ifndef JUGADOR_H_
 #define JUGADOR_H_
 #include"Carta.h"

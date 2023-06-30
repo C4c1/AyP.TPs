@@ -1,10 +1,3 @@
-/*
- * Casilla.h
- *
- *  Created on: 20 may 2023
- *      Author: David
- */
-
 #ifndef CASILLERO_H_
 #define CASILLERO_H_
 #include<string>

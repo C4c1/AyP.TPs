@@ -1,10 +1,3 @@
-/*
- * Lista.h
- *
- *  Created on: 20 may 2023
- *      Author: David
- */
-
 #ifndef LISTA_H_
 #define LISTA_H_
 
@@ -77,7 +70,7 @@ template<class T> void Lista<T>::add(T elemento){
 /* PRE: Position is between [1 , countElements() + 1].
  * POST: Adds the element in passed position. */
 template<class T> void Lista<T>::add(T elemento, unsigned int posicion){
-	if((posicion > 0) && (posicion <= this->tamanio + 1)){ /* posición válida */
+	if((posicion > 0) && (posicion <= this->tamanio + 1)){ /* posiciï¿½n vï¿½lida */
 		Nodo<T>* nuevoNodo = new Nodo<T>(elemento);
 		if(posicion == 1){
 			nuevoNodo->setSiguiente(this->primero);

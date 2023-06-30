@@ -2,7 +2,6 @@
 #define BATALLADIGITAL_H_
 #include"Tablero.h"
 #include"Carta.h"
-//#include"Pila.h"
 #include"Jugador.h"
 #include<string>
 #include<iostream>

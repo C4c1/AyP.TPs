@@ -1,10 +1,3 @@
-/*
- * Coordenada.cpp
- *
- *  Created on: 20 may 2023
- *      Author: David
- */
-
 #include"Coordenada.h"
 
 Coordenada::Coordenada(int posicionX,int posicionY,int posicionZ){

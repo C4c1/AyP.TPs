@@ -1,10 +1,3 @@
-/*
- * Carta.cpp
- *
- *  Created on: 22 may 2023
- *      Author: David
- */
-
 #include"Carta.h"
 
 Carta::Carta(TipoCarta tipo){

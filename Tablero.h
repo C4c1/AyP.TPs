@@ -3,7 +3,11 @@
 
 #include "Casillero.h"
 #include"Lista.h"
+#include "EasyBMP_Font.h"
+#include "EasyBMP.h"
 
+#include<string>
+using namespace std;
 class Tablero{
 
 private:
@@ -60,6 +64,10 @@ public:
      * Pos: Cambia el atributo limiteZ al nuevo ingresado.
      */
 	void setLimiteZ(int nuevoLimite);
+
+	void imprimirTablero();
+
+	void imprimirTablero(string numeroJugador);
 
 	~Tablero();
 };

@@ -1,9 +1,3 @@
-/*
- * Menu.cpp
- *
- *  Created on: 28 may 2023
- *      Author: David
- */
 #include"Menu.h"
 using namespace std;
 
@@ -24,6 +18,7 @@ void Menu::iniciarJuego(){
 	this->juego->getTablero()->crearTablero();
 	this->juego->cargarMapa();
 	this->juego->mostrarTablero();
+	this->juego->getTablero()->imprimirTablero();
 	this->ingresarJugadores();
 	this->ingreseCantidadDeSoldados();
 	cout<<"cantidad: "<<this->juego->getCantidadSoldados()<<endl;
@@ -198,16 +193,20 @@ void Menu::iniciarPartida(){
 				this->juego->tomarCarta(jugador);
 				this->juego->mostrarTableroParaJugador(jugador,jugador->getSimbolo());
 
+
+
 				//COLOCAR MINAS
 				if(this->revisarEstadoDeJuego() == enJuego){
 					this->aniadirMinaEnTablero(jugador);
 					this->juego->mostrarTableroParaJugador(jugador,jugador->getSimbolo());
+
 				}
 
 				//MOVER FICHA
 				if(this->juego->todasLasFichasBloqueadasDe(jugador) == false && this->revisarEstadoDeJuego() == enJuego){
                     this->jugarFicha(jugador);
 					this->juego->mostrarTableroParaJugador(jugador,jugador->getSimbolo());
+
 				}else{
 					cout<<"No tiene fichas que se puedan mover(puede que esten bloquedas)"<<endl;
 				}
@@ -216,6 +215,7 @@ void Menu::iniciarPartida(){
 				if(this->juego->todasLasFichasBloqueadasDe(jugador) == false && this->revisarEstadoDeJuego() == enJuego){
 					this->disparaConBarcosDisponibles(jugador);
 					this->juego->mostrarTableroParaJugador(jugador,jugador->getSimbolo());
+
 				}else{
 					cout<<"No tiene barcos que se puedan disparar(puede que esten bloquedas)"<<endl;
 				}

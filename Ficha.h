@@ -1,10 +1,3 @@
-/*
- * Ficha.h
- *
- *  Created on: 23 may 2023
- *      Author: David
- */
-
 #ifndef FICHA_H_
 #define FICHA_H_
 #include<string>

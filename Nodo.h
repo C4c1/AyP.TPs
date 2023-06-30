@@ -1,10 +1,3 @@
-/*
- * Nodo.h
- *
- *  Created on: 20 may 2023
- *      Author: David
- */
-
 #ifndef NODO_H_
 #define NODO_H_
 

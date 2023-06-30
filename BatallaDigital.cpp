@@ -150,7 +150,7 @@ void BatallaDigital::mostrarTableroParaJugador(Jugador* jugador,std::string nomb
 		cout<<endl;
 	}
 
-
+	this->getTablero()->imprimirTablero(nombre);
 
 
 }
@@ -431,10 +431,10 @@ void BatallaDigital::tomarCarta(Jugador* jugador){
 	int numeroRandom = 1 + rand() % 6;
 	//int numeroRandom = 2;
 
-	if(numeroRandom == 1){
+	if(numeroRandom == 2){
 		Carta* carta = new Carta(cartaDeBarco);
 		jugador->getCartas()->add(carta);
-	}else if(numeroRandom == 2){
+	}else if(numeroRandom == 1){
 		Carta* carta = new Carta(CartaAtaqueQuimico);
 		jugador->getCartas()->add(carta);
 	}else if(numeroRandom == 3){

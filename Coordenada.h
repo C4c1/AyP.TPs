@@ -1,10 +1,3 @@
-/*
- * Coordenada.h
- *
- *  Created on: 20 may 2023
- *      Author: David
- */
-
 #ifndef COORDENADA_H_
 #define COORDENADA_H_
 #include<string>

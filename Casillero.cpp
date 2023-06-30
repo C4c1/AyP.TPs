@@ -1,10 +1,3 @@
-/*
- * Casilla.cpp
- *
- *  Created on: 20 may 2023
- *      Author: David
- */
-
 #include "Casillero.h"
 using namespace std;
 
